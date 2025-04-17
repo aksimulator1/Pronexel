@@ -16,14 +16,16 @@ namespace PRONEXEL_Business.Repositories
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AppDbContext _context;
-        public UserRepo(AppDbContext context, UserManager<ApplicationUser> _userManager, RoleManager<IdentityRole> _roleManager, IHttpContextAccessor httpContextAccessor)
+        public UserRepo(SignInManager<ApplicationUser> _signInManager, AppDbContext context, UserManager<ApplicationUser> _userManager, RoleManager<IdentityRole> _roleManager, IHttpContextAccessor httpContextAccessor)
         {
 
             this._context = context;
             this._userManager = _userManager;
             this._roleManager = _roleManager;
             _httpContextAccessor = httpContextAccessor;
+            this._signInManager = _signInManager;
         }
         public async Task CreateRoles()
         {
@@ -75,6 +77,23 @@ namespace PRONEXEL_Business.Repositories
         
 
           
+        }
+        public async Task<UserDto> AuthinticateUser(UserDto userDto)
+        {
+
+            var result = await _signInManager.PasswordSignInAsync(userName: userDto.UserName, userDto.Password, true, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                var Userinfo = await _userManager.FindByNameAsync(userDto.UserName);
+                var roles = await _userManager.GetRolesAsync(Userinfo);
+                return userDto;
+            }
+            return null;
+        }
+        public async Task<bool> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return true;
         }
     }
 }

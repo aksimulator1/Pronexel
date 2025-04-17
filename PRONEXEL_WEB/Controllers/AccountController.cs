@@ -20,25 +20,44 @@ namespace PRONEXEL_WEB.Controllers
 			return View();
 		}
         [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(UserDto userDto)
+        {
+
+           var res=await _userRepo.AuthinticateUser(userDto);
+            if(res==null)
+            {
+                ViewBag.res = "Incorrect UserName or Password";
+                return View();
+            }
+
+            return RedirectToAction("Index","Home");
+        }
+        [AllowAnonymous]
         public async Task<IActionResult> CreateRoles()
         {
            await _userRepo.CreateRoles();
             return View("Login");
         }
-        [AllowAnonymous]
+        [Authorize(Roles ="SuperAdmin")]
         [HttpGet]
         public async Task<IActionResult> AddUser()
         {
             ViewBag.rlist = _userRepo.AllRoles();
             return View();
         }
-        [AllowAnonymous]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> AddUser(UserDto userDto)
         {
             var res = await _userRepo.AddUser(userDto);
             ViewBag.rlist = _userRepo.AllRoles();
             return View();
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await _userRepo.Logout();
+            return View("Login");
         }
 
     }
