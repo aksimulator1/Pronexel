@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using PRONEXEL_Data.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,45 @@ namespace PRONEXEL_Business.Repositories
                     await _roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
+        }
+        public List<RolesDto> AllRoles()
+        {
+            List<RolesDto> rlist = new List<RolesDto>();
+            var roles = _roleManager.Roles.Where(X => X.Name != "Super Admin").Select(x => new { value = x.Id, Text = x.Name }).ToList();
+            foreach (var item in roles)
+            {
+                RolesDto rd = new RolesDto();
+                rd.RoleName = item.Text;
+                rd.Rid = item.value;
+                rlist.Add(rd);
+            }
+            return rlist;
+        }
+        public async Task<bool> AddUser(UserDto userDto)
+        {
+            try
+            {
+                var data = new IdentityUser { UserName = userDto.UserName, Email = userDto.UserEmails, PasswordHash = userDto.Password, NormalizedUserName = userDto.FirstName + " " + userDto.LastName };
+                var res = await _userManager.CreateAsync(data, userDto.Password);
+                if (res.Succeeded)
+                {
+                    var defaultrole = _roleManager.FindByIdAsync(userDto.Userrole).Result;
+                    var roleresult = await _userManager.AddToRoleAsync(data, defaultrole.Name);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+
+
+           
+        
+
+          
         }
     }
 }
