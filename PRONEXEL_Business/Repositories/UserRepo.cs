@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PRONEXEL_Data.Models.CodeFirst;
 using PRONEXEL_Data.Models.Dto;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace PRONEXEL_Business.Repositories
 {
     public class UserRepo
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
-        public UserRepo(AppDbContext context, UserManager<IdentityUser> _userManager, RoleManager<IdentityRole> _roleManager, IHttpContextAccessor httpContextAccessor)
+        public UserRepo(AppDbContext context, UserManager<ApplicationUser> _userManager, RoleManager<IdentityRole> _roleManager, IHttpContextAccessor httpContextAccessor)
         {
 
             this._context = context;
@@ -53,7 +54,7 @@ namespace PRONEXEL_Business.Repositories
         {
             try
             {
-                var data = new IdentityUser { UserName = userDto.UserName, Email = userDto.UserEmails, PasswordHash = userDto.Password, NormalizedUserName = userDto.FirstName + " " + userDto.LastName };
+                var data = new ApplicationUser {DisplayName=userDto.FirstName+" "+userDto.LastName, UserName = userDto.UserName, Email = userDto.UserEmails, PasswordHash = userDto.Password, NormalizedUserName = userDto.FirstName + " " + userDto.LastName };
                 var res = await _userManager.CreateAsync(data, userDto.Password);
                 if (res.Succeeded)
                 {
