@@ -58,6 +58,18 @@ namespace PRONEXEL_WEB.Controllers
         {
             await _userRepo.Logout();
             return View("Login");
+        } 
+        public async Task<IActionResult> AllUsers()
+        {
+            var res= _userRepo.GetUserswithRoles();
+            return View(res);
+        }
+        [HttpGet]
+        public async Task<JsonResult> DeleteUser(string userid)
+        {
+            var data = await _userRepo.DeleteUser(userid);
+          
+            return Json(data);
         }
 
     }

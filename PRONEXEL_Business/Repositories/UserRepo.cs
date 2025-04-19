@@ -90,10 +90,40 @@ namespace PRONEXEL_Business.Repositories
             }
             return null;
         }
+        public List<UserDto> GetUserswithRoles()
+        {
+            List<ApplicationUser> userData = _userManager.Users.ToList();
+            List<UserDto> usertd = new List<UserDto>();
+            foreach (var item in userData)
+            {
+                UserDto userDto = new UserDto();
+                userDto.UserName = item.UserName;
+                userDto.UserEmails = item.Email;
+                userDto.Userid = item.Id;
+                var dat = _userManager.GetRolesAsync(item).Result;
+                userDto.Userrole = dat[0];
+                if (userDto.Userrole != "Super Admin")
+                {
+                    usertd.Add(userDto);
+                }
+            }
+            return usertd;
+        }
         public async Task<bool> Logout()
         {
             await _signInManager.SignOutAsync();
             return true;
+        }
+        [HttpGet]
+        public async Task<string> DeleteUser(string userid)
+        {
+            var data = await _userManager.FindByIdAsync(userid);
+            if (data != null)
+            {
+                var res = await _userManager.DeleteAsync(data);
+                return ("Deleted");
+            }
+            return ("Not Delete");
         }
     }
 }
