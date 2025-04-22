@@ -1,14 +1,10 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "AddUser";
 }
 <div class="nk-block nk-block-lg">
     <div class="nk-block-head">
         <div class="nk-block-head-content">
             <h4 class="title nk-block-title">Basic Details for Add Users</h4>
-            <div class="nk-block-des">
-                @*       <p>You can alow display form in column as example below.</p>*@
-            </div>
         </div>
     </div>
     <div class="card card-bordered">
@@ -16,66 +12,81 @@
             <div class="card-head">
                 <h5 class="card-title">User Info</h5>
             </div>
-            <form asp-action="AddUser" asp-controller="Account" method="post">
+            <form id="userForm" asp-action="AddUser" asp-controller="Account" method="post">
                 <div class="row g-4">
+                    <!-- First Name -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="full-name-1">First Name</label>
+                            <label class="form-label" for="first-name">First Name</label>
                             <div class="form-control-wrap">
-                                <input type="text" name="FirstName" class="form-control" id="full-name-1">
+                                <input type="text" name="FirstName" class="form-control" id="first-name" required>
                             </div>
                         </div>
                     </div>
+                    <!-- Last Name -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="full-name-1">Last Name</label>
+                            <label class="form-label" for="last-name">Last Name</label>
                             <div class="form-control-wrap">
-                                <input type="text" name="LastName" class="form-control" id="full-name-1">
+                                <input type="text" name="LastName" class="form-control" id="last-name" required>
                             </div>
                         </div>
                     </div>
+                    <!-- Email -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="email-address-1">Email address</label>
+                            <label class="form-label" for="email-address">Email address</label>
                             <div class="form-control-wrap">
-                                <input type="email" name="UserEmails" class="form-control" id="email-address-1">
+                                <input type="email" name="UserEmails" class="form-control" id="email-address" required>
                             </div>
                         </div>
                     </div>
+                    <!-- Username -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="full-name-1">User Name</label>
+                            <label class="form-label" for="user-name">User Name</label>
                             <div class="form-control-wrap">
-                                <input type="text" name="UserName" class="form-control" id="full-name-1">
+                                <input type="text" name="UserName" class="form-control" id="user-name" required>
                             </div>
                         </div>
                     </div>
+                    <!-- Password -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="phone-no-1">Password</label>
+                            <label class="form-label" for="password">Password</label>
                             <div class="form-control-wrap">
-                                <input type="password" name="Password" class="form-control" id="phone-no-1">
+                                <input type="password" name="Password" class="form-control" id="password"
+                                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$"
+                                       title="Min 8 chars, 1 uppercase, 1 lowercase, 1 special character"
+                                       required>
                             </div>
                         </div>
                     </div>
+                    <!-- Confirm Password -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="pay-amount-1">User Role</label>
+                            <label class="form-label" for="confirm-password">Confirm Password</label>
                             <div class="form-control-wrap">
-
-                                <select name="Userrole" class="form-control">
+                                <input type="password" name="ConfirmPassword" class="form-control" id="confirm-password" required>
+                                <small id="passwordMismatch" style="color:red; display:none;">Passwords do not match</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Role -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="user-role">User Role</label>
+                            <div class="form-control-wrap">
+                                <select name="Userrole" class="form-control" id="user-role" required>
                                     @for (int i = 0; i < ViewBag.rlist.Count; i++)
                                     {
                                         <option value="@ViewBag.rlist[i].Rid">@ViewBag.rlist[i].RoleName</option>
                                     }
-
                                 </select>
-
-
                             </div>
                         </div>
                     </div>
-
+                    <!-- Submit -->
                     <div class="col-12">
                         <div class="form-group">
                             <button type="submit" class="btn btn-lg btn-primary">Save Information</button>
@@ -85,4 +96,31 @@
             </form>
         </div>
     </div>
-</div><!-- .nk-block -->
+</div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#userForm').on('submit', function (e) {
+                var password = $('#password').val();
+                var confirmPassword = $('#confirm-password').val();
+                var pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
+                // Validate password strength
+                if (!pattern.test(password)) {
+                    alert("Password does not meet complexity requirements.");
+                    e.preventDefault();
+                    return;
+                }
+
+                // Validate match
+                if (password !== confirmPassword) {
+                    $('#passwordMismatch').show();
+                    e.preventDefault();
+                } else {
+                    $('#passwordMismatch').hide();
+                }
+            });
+        });
+    </script>
+

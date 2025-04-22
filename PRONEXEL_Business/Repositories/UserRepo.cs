@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PRONEXEL_Data.Models.CodeFirst;
 using PRONEXEL_Data.Models.Dto;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,7 @@ namespace PRONEXEL_Business.Repositories
         public List<RolesDto> AllRoles()
         {
             List<RolesDto> rlist = new List<RolesDto>();
-            var roles = _roleManager.Roles.Where(X => X.Name != "Super Admin").Select(x => new { value = x.Id, Text = x.Name }).ToList();
+            var roles = _roleManager.Roles.Where(X => X.Name != "SuperAdmin").Select(x => new { value = x.Id, Text = x.Name }).ToList();
             foreach (var item in roles)
             {
                 RolesDto rd = new RolesDto();
@@ -63,6 +64,10 @@ namespace PRONEXEL_Business.Repositories
                     var defaultrole = _roleManager.FindByIdAsync(userDto.Userrole).Result;
                     var roleresult = await _userManager.AddToRoleAsync(data, defaultrole.Name);
                     return true;
+                }
+                else
+                {
+                    string errormsg = string.Join(", ", res);
                 }
                 return false;
             }
