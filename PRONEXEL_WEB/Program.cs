@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using PRONEXEL_Business.Repositories;
+using PRONEXEL_Business.Services;
 using PRONEXEL_Data.Models.CodeFirst;
 using System.Configuration;
 
@@ -42,6 +43,7 @@ builder.Services.AddControllersWithViews(opt => {
                .RequireAuthenticatedUser().Build();
     opt.Filters.Add(new AuthorizeFilter(policy));
 });
+builder.Services.AddTransient<DatabaseService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

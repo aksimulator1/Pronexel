@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -129,6 +130,75 @@ namespace PRONEXEL_Business.Repositories
                 return ("Deleted");
             }
             return ("Not Delete");
+        }
+        public async Task<string> GetUserName(string userid)
+        {
+            try
+            {
+                //return "Not Found";
+                var user = await _userManager.FindByIdAsync(userid);
+                if (user != null)
+                {
+                    return user.UserName;
+                }
+                return "Anonymous User";
+            }
+            catch (Exception)
+            {
+
+                return "Not Found";
+            }
+
+        }
+        public async Task<string> GetUserEmailById(string userId)
+        {
+            try
+            {
+                //return "Not Found";
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    return user.Email;
+                }
+                return "Anonymous User";
+            }
+            catch (Exception)
+            {
+
+                return "Not Found";
+            }
+        }
+        public async Task<string> ActiveUserId()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+            if (userId != null)
+            {
+                var res = await _userManager.FindByEmailAsync(userId);
+                return res.Id;
+            }
+            else
+            {
+                return "Anonymous User";
+            }
+        }
+        public async Task<ApplicationUser> getUser(string id)
+        {
+            var dt = await _userManager.FindByIdAsync(id);
+            return dt;
+        }
+        public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
+        {
+            var Userinfo = await _userManager.FindByIdAsync(id);
+
+            if (Userinfo == null)
+            {
+                // Handle the case where the user doesn't exist
+                return null;
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(Userinfo);
+
+            return userRoles;
         }
     }
 }
