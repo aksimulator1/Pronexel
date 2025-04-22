@@ -79,14 +79,27 @@ namespace PRONEXEL_Business.Services
 
         public List<SqlParameter> ReturnSqlParameters(object obj)
         {
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            Type objectType = obj.GetType();
-            PropertyInfo[] properties = objectType.GetProperties();
-            foreach (PropertyInfo property in properties)
+            try
             {
-                parameters.Add(new SqlParameter("@" + property.Name, property.GetValue(obj)));
+                if(obj==null)
+                {
+                    return null;
+                }
+                List<SqlParameter> parameters = new List<SqlParameter>();
+                Type objectType = obj.GetType();
+                PropertyInfo[] properties = objectType.GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    parameters.Add(new SqlParameter("@" + property.Name, property.GetValue(obj)));
+                }
+                return parameters;
             }
-            return parameters;
+            catch (Exception e)
+            {
+
+                return null;
+            }
+           
         }
 
 

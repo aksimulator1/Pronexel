@@ -32,6 +32,7 @@ builder.Services.AddRazorPages()
 
 
 builder.Services.AddTransient<UserRepo>();
+builder.Services.AddTransient<ContentRepo>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApplicationCookie(options =>
 {

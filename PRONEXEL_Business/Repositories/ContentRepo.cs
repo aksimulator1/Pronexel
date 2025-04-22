@@ -43,7 +43,7 @@ namespace PRONEXEL_Business.Repositories
             try
             {
              
-                var res = await databaseService.ExecuteStoredProcedureAsync<TopicCategoryModel>("sp_InsertTopicCategory");
+                var res = await databaseService.ExecuteStoredProcedureAsync<TopicCategoryModel>("sp_GetActiveTopicCategories");
                 return res.ToList();
 
             }
