@@ -115,7 +115,7 @@ namespace PRONEXEL_Business.Repositories
             return userDto;
         }
 
-        public List<UserDto> GetUserswithRoles()
+        public async Task<List<UserDto>> GetUserswithRoles()
         {
             List<ApplicationUser> userData = _userManager.Users.ToList();
             List<UserDto> usertd = new List<UserDto>();
@@ -127,7 +127,7 @@ namespace PRONEXEL_Business.Repositories
                 userDto.Userid = item.Id;
                 var dat = _userManager.GetRolesAsync(item).Result;
                 userDto.Userrole = dat[0];
-                if (userDto.Userrole != "SuperAdmin")
+                if (userDto.Userrole != "SuperAdmin" && userDto.Userid!=await ActiveUserId())
                 {
                     usertd.Add(userDto);
                 }
@@ -229,45 +229,64 @@ namespace PRONEXEL_Business.Repositories
                     return false; // User not found
                 }
 
-                // Update user properties
-         
+                // Update basic user properties
                 user.UserName = userDto.UserName;
                 user.Email = userDto.UserEmails;
-                user.PasswordHash = userDto.Password;
                 user.NormalizedUserName = userDto.UserName.ToUpper();
 
-                // Update user in database
+                // Update the user in the database
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                 {
-                    return false; // Failed to update user
+                    return false; // Failed to update user info
+                }
+
+                // Update password if provided
+                if (!string.IsNullOrWhiteSpace(userDto.Password))
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var passwordResult = await _userManager.ResetPasswordAsync(user, token, userDto.Password);
+                    if (!passwordResult.Succeeded)
+                    {
+                        return false; // Password update failed
+                    }
                 }
 
                 // Update user role if necessary
                 var currentRoles = await _userManager.GetRolesAsync(user);
                 if (!currentRoles.Contains(userDto.Userrole))
                 {
-                    // Remove current roles
-                    await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                    // Remove all current roles
+                    var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                    if (!removeResult.Succeeded)
+                    {
+                        return false; // Failed to remove existing roles
+                    }
 
-                    // Add new role
+                    // Assign new role
                     var role = await _roleManager.FindByIdAsync(userDto.Userrole);
                     if (role != null)
                     {
                         var roleResult = await _userManager.AddToRoleAsync(user, role.Name);
                         if (!roleResult.Succeeded)
                         {
-                            return false; // Failed to update role
+                            return false; // Failed to assign new role
                         }
+                    }
+                    else
+                    {
+                        return false; // Role not found
                     }
                 }
 
-                return true; // Update successful
+                return true; // All updates successful
             }
             catch (Exception)
             {
-                return false; // Handle exceptions
+                // Optionally log the exception
+                return false; // Handle any unexpected errors
             }
         }
+
     }
 }

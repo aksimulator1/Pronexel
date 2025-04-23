@@ -74,7 +74,7 @@ namespace PRONEXEL_WEB.Controllers
         } 
         public async Task<IActionResult> AllUsers()
         {
-            var res= _userRepo.GetUserswithRoles();
+            var res= await _userRepo.GetUserswithRoles();
             return View(res);
         }
         [HttpGet]
