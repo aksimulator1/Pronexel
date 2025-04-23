@@ -46,6 +46,19 @@ namespace PRONEXEL_WEB.Controllers
             ViewBag.rlist = _userRepo.AllRoles();
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> EditUsers(string id)
+        {
+            var data = await _userRepo.GetUser(id);
+            ViewBag.rlist = _userRepo.AllRoles();
+            return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUsers(UserDto userDto)
+        {
+            var data=await _userRepo.UpdateUser(userDto);
+            return RedirectToAction("AllUsers","Account");
+        }
         [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> AddUser(UserDto userDto)
