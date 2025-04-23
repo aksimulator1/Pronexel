@@ -53,5 +53,41 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
+        public async Task<string> UpdateTopicCategory(string topicId, string topicName, string topicDescription)
+        {
+            try
+            {
+                var pram = new
+                {
+                    ID = topicId,
+                    TopicName = topicName,
+                    TopicDescription = topicDescription,
+                    UpdatedBy = await userRepo.ActiveUserId()
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_UpdateTopicCategory", pram);
+                return res.FirstOrDefault() ;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public async Task<string> DeleteTopicCategory(string topicId)
+        {
+            try
+            {
+                var pram = new
+                {
+                    ID = topicId
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_UpdateDeleteCategory", pram);
+                return res.FirstOrDefault() ;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
     }
 }

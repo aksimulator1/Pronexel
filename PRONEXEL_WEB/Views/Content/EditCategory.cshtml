@@ -1,0 +1,74 @@
+﻿@model PRONEXEL_Data.Models.Dto.TopicCategoryModel
+@{
+    ViewData["Title"] = "EditCategory";
+}
+
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+
+        <div class="nk-block-between g-3">
+            <div class="nk-block-head-content">
+                <h3 class="nk-block-title page-title">Edit Topics</h3>
+                <div class="nk-block-des text-soft">
+                </div>
+            </div>
+
+            <div class="nk-block-head-content">
+                <div class="toggle-wrap nk-block-tools-toggle">
+                    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                    <div class="toggle-expand-content" data-content="pageMenu">
+                        <ul class="nk-block-tools g-3">
+
+                            <li class="nk-block-tools-opt"><a href="~/Marketings/UploadMarketingSocials" class="btn btn-primary"><em class="icon ni ni-reports"></em><span>All Topics</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- .nk-block-head-content -->
+
+
+        </div>
+
+    </div>
+
+    <div class="card card-bordered">
+
+        <div class="card-inner">
+
+            <form id="userForm" asp-action="EditCategory" asp-controller="Content" method="post">
+                <div class="row g-4">
+                    <!-- First Name -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="first-name">Topic Name</label>
+                            <div class="form-control-wrap">
+                                <input type="text" asp-for="TopicName" name="TopicName" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="ID" name="ID" value="@Model.ID" class="form-control" required />
+
+                    <!-- Last Name -->
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="last-name">Description</label>
+                            <div class="form-control-wrap">
+                                <textarea type="text" asp-for="TopicDescription" name="TopicDescription" class="form-control" id="last-name" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <!-- Role -->
+                    <!-- Submit -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Save Information</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
