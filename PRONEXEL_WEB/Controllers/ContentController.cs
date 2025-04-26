@@ -111,25 +111,110 @@ namespace PRONEXEL_WEB.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddSubTopic(string TopicId, string SubTopicName, string SubTopicDescription)
-        //{
-        //    if (string.IsNullOrEmpty(TopicId))
-        //    {
-        //        ModelState.AddModelError("", "Topic ID is required.");
-        //        return View();
-        //    }
 
-        //    var result = await _contentRepo.AddSubTopic(TopicId, SubTopicName, SubTopicDescription);
+        [HttpPost]
+        public async Task<IActionResult> AddSubTopic(string CatID, string SubTopicName, string Description)
+        {
+            if (string.IsNullOrEmpty(CatID))
+            {
+                ModelState.AddModelError("", "Category ID is required.");
+                return View();
+            }
 
-        //    if (result != "Success")
-        //    {
-        //        ModelState.AddModelError("", "Failed to add the sub-topic.");
-        //        return View();
-        //    }
+            var result = await _contentRepo.AddSubTopic(SubTopicName, Description, CatID);
 
-        //    return RedirectToAction("AllCategory");
-        //}
+          
+            var categories = await _contentRepo.GetTopic();
+            ViewBag.SubTopic = categories;
+            return RedirectToAction("AllSubTopics", new { catID = CatID });
+        }
+        [HttpGet]
+        public async Task<IActionResult> SubTopicDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Subcategory ID is required.");
+            }
+
+            var Subcategories = await _contentRepo.GetSubTopics();
+            var Subcategory = Subcategories.FirstOrDefault(c => c.SubTopicID == id);
+
+            if (Subcategory == null)
+            {
+                return NotFound("Subcategory not found.");
+            }
+
+            return View(Subcategory);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditSubTopic(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("SubTopic ID is required.");
+            }
+
+            var subTopics = await _contentRepo.GetSubTopics(); // Fetch all subtopics
+            var subTopic = subTopics.FirstOrDefault(s => s.SubTopicID == id);
+
+            if (subTopic == null)
+            {
+                return NotFound("SubTopic not found.");
+            }
+
+            var categories = await _contentRepo.GetTopic();
+            ViewBag.Categories = categories; // Pass categories for selection
+            return View(subTopic);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSubTopic(TopicSubcategoryModel model,string CatID)
+        {
+            if (string.IsNullOrEmpty(model.SubTopicID))
+            {
+                return BadRequest("SubTopic ID is required.");
+            }
+
+            var result = await _contentRepo.UpdateSubTopic(model.SubTopicID, model.SubTopicName, model.Description, CatID);
+
+            if (result != "Success")
+            {
+                ModelState.AddModelError("", "Failed to update the sub-topic.");
+                return View(model);
+            }
+
+            return RedirectToAction("AllSubTopics");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AllSubTopics()
+        {
+          
+
+            var subTopics = await _contentRepo.GetSubTopics();
+            return View(subTopics);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteSubTopic(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("SubTopic ID is required.");
+            }
+
+            var result = await _contentRepo.DeleteSubTopic(id);
+
+            if (result != "Success")
+            {
+                return BadRequest("Failed to delete the sub-topic.");
+            }
+
+            return RedirectToAction("AllSubTopics");
+        }
+
+
 
     }
 }

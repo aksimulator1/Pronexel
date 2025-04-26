@@ -1,6 +1,6 @@
-﻿
+﻿@model PRONEXEL_Data.Models.Dto.TopicSubcategoryModel
 @{
-    ViewData["Title"] = "AddSubTopic";
+    ViewData["Title"] = "SubTopics";
 }
 
 <div class="nk-block nk-block-lg">
@@ -8,7 +8,7 @@
 
         <div class="nk-block-between g-3">
             <div class="nk-block-head-content">
-                <h3 class="nk-block-title page-title">Main Topics</h3>
+                <h3 class="nk-block-title page-title">Sub Topics</h3>
                 <div class="nk-block-des text-soft">
                 </div>
             </div>
@@ -36,19 +36,15 @@
 
         <div class="card-inner">
 
-            <form id="userForm" asp-action="AddSubTopic" asp-controller="Content" method="post">
+            <form id="userForm" asp-action="EditCategory" asp-controller="Content" method="post">
                 <div class="row g-4">
+                  
                     <!-- First Name -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="first-name">Main Topic</label>
+                            <label class="form-label" for="first-name">Topic Name</label>
                             <div class="form-control-wrap">
-                                <select class="form-control" name="CatID" id="user-role" search="on" required>
-                                    @for (int i = 0; i < ViewBag.SubTopic.Count; i++)
-                                    {
-                                        <option value="@ViewBag.SubTopic[i].ID">@ViewBag.SubTopic[i].TopicName</option>
-                                    }
-                                </select>
+                                <input type="text" disabled asp-for="TopicName" name="TopicName" class="form-control" required />
                             </div>
                         </div>
                     </div>
@@ -56,7 +52,7 @@
                         <div class="form-group">
                             <label class="form-label" for="first-name">Sub Topic Name</label>
                             <div class="form-control-wrap">
-                                <input type="text" name="SubTopicName" class="form-control" required />
+                                <input type="text" disabled asp-for="SubTopicName" name="TopicName" class="form-control" required />
                             </div>
                         </div>
                     </div>
@@ -65,18 +61,14 @@
                         <div class="form-group">
                             <label class="form-label" for="last-name">Description</label>
                             <div class="form-control-wrap">
-                                <textarea type="text" name="Description" class="form-control" id="last-name" required></textarea>
+                                <textarea disabled type="text" asp-for="Description" name="TopicDescription" class="form-control" id="last-name" required></textarea>
                             </div>
                         </div>
                     </div>
                     <!-- Email -->
                     <!-- Role -->
                     <!-- Submit -->
-                    <div class="col-12">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-lg btn-primary">Save Information</button>
-                        </div>
-                    </div>
+
                 </div>
             </form>
         </div>

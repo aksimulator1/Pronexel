@@ -90,6 +90,73 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
-        
+        public async Task<string> AddSubTopic(string subTopicName, string description, string catID)
+        {
+            try
+            {
+                var pram = new
+                {
+                    SubTopicName = subTopicName,
+                    Description = description,
+                    CatID = catID
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_InsertSubTopic", pram);
+                return res.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<TopicSubcategoryModel>> GetSubTopics()
+        {
+            try
+            {
+              
+                var res = await databaseService.ExecuteStoredProcedureAsync<TopicSubcategoryModel>("sp_GetSubTopics");
+                return res.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> UpdateSubTopic(string subTopicID, string subTopicName, string description, string catID)
+        {
+            try
+            {
+                var pram = new
+                {
+                    SubTopicID = subTopicID,
+                    SubTopicName = subTopicName,
+                    Description = description,
+                    CatID = catID
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_UpdateSubTopic", pram);
+                return res.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> DeleteSubTopic(string subTopicID)
+        {
+            try
+            {
+                var pram = new { ID = subTopicID };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_DeleteSubTopic", pram);
+                return res.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }
