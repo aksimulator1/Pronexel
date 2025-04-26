@@ -264,7 +264,7 @@ namespace PRONEXEL_Business.Repositories
                     }
 
                     // Assign new role
-                    var role = await _roleManager.FindByIdAsync(userDto.Userrole);
+                    var role = await _roleManager.FindByNameAsync(userDto.Userrole);
                     if (role != null)
                     {
                         var roleResult = await _userManager.AddToRoleAsync(user, role.Name);
