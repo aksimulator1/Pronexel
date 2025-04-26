@@ -19,13 +19,14 @@ namespace PRONEXEL_Business.Repositories
                 this.databaseService = databaseService;
                 this.userRepo = userRepo;
         }
-        public async Task<string> AddTopic(string TopicName,string TopicDescription)
+        public async Task<string> AddTopic(string TopicName,string TopicDescription,string CategoryType)
         {
             try
             {
                 var pram = new {
                     TopicName = TopicName,
                     TopicDescription = TopicDescription,
+                    CategoryType= CategoryType,
                     CreatedBy = await userRepo.ActiveUserId()
                 };
                 var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_InsertTopicCategory", pram);
@@ -53,7 +54,7 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
-        public async Task<string> UpdateTopicCategory(string topicId, string topicName, string topicDescription)
+        public async Task<string> UpdateTopicCategory(string topicId, string topicName, string topicDescription,string CategoryType)
         {
             try
             {
@@ -62,7 +63,8 @@ namespace PRONEXEL_Business.Repositories
                     ID = topicId,
                     TopicName = topicName,
                     TopicDescription = topicDescription,
-                    UpdatedBy = await userRepo.ActiveUserId()
+                    UpdatedBy = await userRepo.ActiveUserId(),
+                    CategoryType= CategoryType
                 };
                 var res = await databaseService.ExecuteStoredProcedureAsync<string>("sp_UpdateTopicCategory", pram);
                 return res.FirstOrDefault() ;

@@ -10,6 +10,7 @@ namespace PRONEXEL_Data.Models.Dto
     {
         public string ID { get; set; }
         public string TopicName { get; set; }
+        public string CategoryType { get; set; }
         public string TopicDescription { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedByName { get; set; }

@@ -33,56 +33,41 @@
     </div>
     <div class="card card-preview">
         <div class="card-inner">
-
-            <table class="datatable-init-export nowrap table">
-                <thead>
-                    <tr>
-                        <th>Topic Name</th>
-                        <th>Topic Description</th>
-                        <th>Created By</th>
-                        <th>Created On</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            <div>
+                <!-- Added wrapper for horizontal scrolling -->
+                <table class="datatable-init-export nowrap table" >
+                    <thead>
                         <tr>
-
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TopicName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TopicDescription)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedByName)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedOn)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-
-                            </td>
-                            <td>
-                                <a href="~/Content/DeleteTopic?id=@item.ID" class="btn btn-danger btn-sm">Delete</a>
-                                <a href="~/Content/EditCategory?id=@item.ID" class="btn btn-primary btn-sm">Edit</a>
-
-                            </td>
-
-
+                            <th>Type</th>
+                            <th>Topic Name</th>
+                  
+                            <th>Created By</th>
+                            <th>Created On</th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-
-            </table>
+                    </thead>
+                    <tbody style="overflow-x: auto;">
+                        @foreach (var item in Model)
+                        {
+                            <tr >
+                                <td>@Html.DisplayFor(modelItem => item.CategoryType)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TopicName)</td>
+                           
+                                <td>@Html.DisplayFor(modelItem => item.CreatedByName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                                <td>
+                                    <a href="~/Content/CategoryDetails?id=@item.ID" class="btn btn-success btn-sm">Details</a>
+                                    <a href="~/Content/DeleteTopic?id=@item.ID" class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="~/Content/EditCategory?id=@item.ID" class="btn btn-primary btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div><!-- .card-preview -->
+    </div>
+    
 </div>
 
 <script type="text/javascript">

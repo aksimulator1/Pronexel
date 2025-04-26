@@ -21,9 +21,9 @@ namespace PRONEXEL_WEB.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddCategory(string TopicName,string TopicDescription)
+        public async Task<IActionResult> AddCategory(string TopicName,string TopicDescription, string CategoryType)
         {
-            var res= await _contentRepo.AddTopic(TopicName, TopicDescription);
+            var res= await _contentRepo.AddTopic(TopicName, TopicDescription, CategoryType);
             return View();
         }
         [HttpGet]
@@ -62,7 +62,7 @@ namespace PRONEXEL_WEB.Controllers
             category.TopicDescription = model.TopicDescription;
 
             // Assuming _contentRepo has a method to update the category in the database
-            var result = await _contentRepo.UpdateTopicCategory(category.ID,category.TopicName,category.TopicDescription);
+            var result = await _contentRepo.UpdateTopicCategory(category.ID,category.TopicName,category.TopicDescription,model.CategoryType);
 
             if (result!= "Success")
             {
@@ -77,6 +77,24 @@ namespace PRONEXEL_WEB.Controllers
         {
             var categories = await _contentRepo.GetTopic();
             return View(categories);
+        }
+        [HttpGet]
+        public async Task<IActionResult> CategoryDetails(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("Category ID is required.");
+            }
+
+            var categories = await _contentRepo.GetTopic();
+            var category = categories.FirstOrDefault(c => c.ID == id);
+
+            if (category == null)
+            {
+                return NotFound("Category not found.");
+            }
+
+            return View(category);
         }
         [HttpGet]
         public async Task<IActionResult> DeleteTopic(string id)
