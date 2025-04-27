@@ -12,13 +12,13 @@
             <div class="card-head">
                 <h5 class="card-title">Media Info</h5>
             </div>
-            <form id="mediaForm" asp-action="AddMedia" asp-controller="Media" method="post" enctype="multipart/form-data">
+            <form id="mediaForm" asp-action="AddMedia" asp-controller="MediaManagement" method="post" enctype="multipart/form-data">
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label" for="user-role">Sub Topics</label>
                             <div class="form-control-wrap">
-                                <select name="Userrole" class="form-control" id="user-role" required>
+                                <select name="ID" class="form-control" id="user-role" required>
                                     @for (int i = 0; i < ViewBag.AllsubTopics.Count; i++)
                                     {
                                         <option value="@ViewBag.AllsubTopics[i].SubTopicID">@ViewBag.AllsubTopics[i].SubTopicName</option>
@@ -50,15 +50,15 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="MediaURL" class="form-control" id="media-url" required>
+                    <input type="hidden" name="Path" class="form-control" id="media-url" required>
                     <!-- Title -->
                  
                   
                     <!-- Hidden Video Upload Field -->
-                
+                    <div class="col-12">
                     <div id="upload-progress" class="progress progress-lg mt-2" style="background-color: #052dcc;display:none">
-        <div id="upload-progress-bar" class="progress-bar" style="width: 0%;">0%</div>
-    </div>
+                        <div id="upload-progress-bar" class="progress-bar" style="width: 0%;">0%</div>
+                    </div>    </div>
 
                     <!-- Submit -->
                     <div class="col-12">

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using PRONEXEL_Business.Services;
+using PRONEXEL_Data.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +41,7 @@ namespace PRONEXEL_Business.Repositories
             }
 
             // Combine path
-            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folderName);
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Media", folderName);
 
             // Create folder if not exists
             if (!Directory.Exists(folderPath))
@@ -55,7 +57,21 @@ namespace PRONEXEL_Business.Repositories
                 Files.CopyTo(stream);
             }
 
-            return fileName;
+            return "Media\\"+fileName;
+        }
+        public async Task<string> AddMediaIntoDbAsync(Media media)
+        {
+            var pram = new
+            {
+                SubTopicID=media.SubTopicID,
+                MediaType=media.MediaType,
+                MediaURL=media.MediaURL,
+                Title="New isnsert"
+            };
+            var res = await databaseService.ExecuteStoredProcedureAsync<string>("InsertMedia", pram);
+            return res.FirstOrDefault();
+            
+          
         }
 
     }
