@@ -20,6 +20,12 @@ namespace PRONEXEL_WEB.Controllers
             ViewBag.AllsubTopics = await contentRepo.GetSubTopics();
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> AllMedia()
+        {
+            var res = await mediaRepo.AllMedia();
+            return View(res);
+        }
         [HttpPost]
         public async Task<IActionResult> AddMedia(string ID,string MediaType,string Path)
         {

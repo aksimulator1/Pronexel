@@ -14,6 +14,7 @@
             </div>
             <form id="mediaForm" asp-action="AddMedia" asp-controller="MediaManagement" method="post" enctype="multipart/form-data">
                 <div class="row g-4">
+                    <!-- Sub Topics -->
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label" for="user-role">Sub Topics</label>
@@ -27,8 +28,8 @@
                             </div>
                         </div>
                     </div>
-              
 
+                    <!-- Media Type -->
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label" for="media-type">Media Type</label>
@@ -42,23 +43,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Media Upload -->
                     <div class="col-lg-6" id="media-upload-section" style="display: none;">
                         <div class="form-group">
-                            <label class="form-label" for="video-file">Upload File</label>
+                            <label class="form-label" for="media-file">Upload File</label>
                             <div class="form-control-wrap">
-                                <input type="file" class="form-control" id="media-file"/>
+                                <input type="file" class="form-control" id="media-file" name="file" />
                             </div>
                         </div>
                     </div>
+
+                    <!-- Hidden Path Input -->
                     <input type="hidden" name="Path" class="form-control" id="media-url" required>
-                    <!-- Title -->
-                 
-                  
-                    <!-- Hidden Video Upload Field -->
+
+                    <!-- Upload Progress -->
                     <div class="col-12">
-                    <div id="upload-progress" class="progress progress-lg mt-2" style="background-color: #052dcc;display:none">
-                        <div id="upload-progress-bar" class="progress-bar" style="width: 0%;">0%</div>
-                    </div>    </div>
+                        <div id="upload-progress" class="progress progress-lg mt-2" style="background-color: #052dcc; display: none;">
+                            <div id="upload-progress-bar" class="progress-bar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
 
                     <!-- Submit -->
                     <div class="col-12">
@@ -71,16 +75,17 @@
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
-        // When media type is selected
+        // Show media upload section and set accepted file types
         $('#media-type').change(function () {
             var selectedType = $(this).val();
             if (selectedType === "Video" || selectedType === "Images" || selectedType === "Documents") {
                 $('#media-upload-section').show();
 
                 if (selectedType === "Video") {
-                    $('#media-file').attr('accept', 'video/*');
+                    $('#media-file').attr('accept', 'video/mp4,video/x-m4v,video/*'); // Allow MP4 and others
                 } else if (selectedType === "Images") {
                     $('#media-file').attr('accept', 'image/*');
                 } else if (selectedType === "Documents") {
@@ -93,63 +98,48 @@
             }
         });
 
-        // When file is selected
-         $('#media-file').change(function () {
-        var file = this.files[0];
-        if (file) {
-            var formData = new FormData();
-            formData.append('file', file);
-            formData.append('FileType', $('#media-type').val());
+        // Handle file upload via AJAX with progress
+        $('#media-file').change(function () {
+            var file = this.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('FileType', $('#media-type').val());
 
-            $('#upload-progress').show();
-            $('#upload-progress-bar').css('width', '0%').text('0%');
+                $('#upload-progress').show();
+                $('#upload-progress-bar').css('width', '0%').text('0%');
 
-            $.ajax({
-                xhr: function () {
-                    var xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", function (evt) {
-                        if (evt.lengthComputable) {
-                            var percentComplete = Math.round((evt.loaded / evt.total) * 100);
-                            $('#upload-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
-                        }
-                    }, false);
-                    return xhr;
-                },
-                url: '/MediaManagement/UploadMedia',  // URL must match Controller route
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    var fullMediaUrl = window.location.origin + response.mediaUrl;
-                    $('#media-url').val(fullMediaUrl);
-                    $('#media-title').val(file.name);
-                    alert('✅ Media uploaded successfully!');
-                    $('#upload-progress-bar').css('width', '100%').text('Upload Complete');
-                    setTimeout(function () {
+                $.ajax({
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                                $('#upload-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    url: '/MediaManagement/UploadMedia', // Backend API
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#media-url').val(response); // Assume response is path
+                        alert('✅ Media uploaded successfully!');
+                        $('#upload-progress-bar').css('width', '100%').text('Upload Complete');
+                        setTimeout(function () {
+                            $('#upload-progress').hide();
+                        }, 1000);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('❌ Failed to upload media. Server says: ' + xhr.responseText);
                         $('#upload-progress').hide();
-                    }, 1000);
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('❌ Failed to upload media. Server says: ' + xhr.responseText);
-                    $('#upload-progress').hide();
-                }
-            });
-        }
-    });
-
-
-        // Form submit validation
-        $('#mediaForm').on('submit', function (e) {
-            var mediaUrl = $('#media-url').val();
-
-            if (!mediaUrl || !(mediaUrl.startsWith("http") || mediaUrl.startsWith("/"))) {
-                alert("⚠️ Media URL must be filled and must start with http or /uploads/.");
-                e.preventDefault();
+                    }
+                });
             }
         });
     });
 </script>
-
-
