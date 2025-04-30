@@ -388,7 +388,8 @@
                             <li class="nk-menu-heading">
                                 <h6 class="overline-title text-primary-alt">Pre-Built Pages</h6>
                             </li><!-- .nk-menu-heading -->
-                  
+                            @if (User.IsInRole("SuperAdmin") || (User.IsInRole("Admin")))
+                            {
                             <li class="nk-menu-item has-sub">
                                 <a href="#" class="nk-menu-link nk-menu-toggle">
                                     <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
@@ -404,8 +405,7 @@
                           
                                 </ul><!-- .nk-menu-sub -->
                             </li><!-- .nk-menu-item -->
-                            @if(User.IsInRole("SuperAdmin") || (User.IsInRole("Admin")))
-                            {
+                           
                                 <li class="nk-menu-item has-sub">
                                     <a href="#" class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon"><em class="icon ni ni-book"></em></span>
@@ -454,6 +454,12 @@
                                             <a href="MediaManagement/AddMedia" class="nk-menu-link">
                                                 <span class="nk-menu-icon"><em class="icon ni ni-plus"></em></span>
                                                 <span class="nk-menu-text">Add Media</span>
+                                            </a>
+                                        </li>  
+                                        <li class="nk-menu-item">
+                                            <a href="MediaManagement/AllMedia" class="nk-menu-link">
+                                                <span class="nk-menu-icon"><em class="icon ni ni-plus"></em></span>
+                                                <span class="nk-menu-text">All Media</span>
                                             </a>
                                         </li>
                                     </ul><!-- .nk-menu-sub -->

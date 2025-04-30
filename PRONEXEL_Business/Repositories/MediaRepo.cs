@@ -57,7 +57,7 @@ namespace PRONEXEL_Business.Repositories
                 Files.CopyTo(stream);
             }
 
-            return "Media\\"+fileName;
+            return "/Media/"+ folderName + "/" + fileName;
         }
         public async Task<string> AddMediaIntoDbAsync(Media media)
         {
@@ -71,6 +71,12 @@ namespace PRONEXEL_Business.Repositories
             var res = await databaseService.ExecuteStoredProcedureAsync<string>("InsertMedia", pram);
             return res.FirstOrDefault();
             
+          
+        }
+        public async Task<List<Media>> AllMedia()
+        {
+            var res = await databaseService.ExecuteStoredProcedureAsync<Media>("GetAllMedia");
+            return res.ToList();
           
         }
 
