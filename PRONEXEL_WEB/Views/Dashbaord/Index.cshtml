@@ -1,0 +1,35 @@
+﻿@page
+@model PRONEXEL_WEB.Views.Dashbaord.IndexModel
+@using PRONEXEL_WEB.Models
+@{
+    var categories = Model.TopicCategories; // Assuming a property in your PageModel like: public List<TopicCategoryModel> TopicCategories { get; set; }
+}
+
+<div class="row g-gs">
+    @foreach (var item in categories)
+    {
+        <div class="col-xxl-3 col-lg-4 col-sm-6">
+            <div class="card card-bordered product-card">
+                <div class="product-thumb">
+                    <a href="#">
+                        <img class="card-img-top" src="~/images/product/lg-a.jpg" alt="Category Image">
+                    </a>
+                    <ul class="product-badges">
+                        <li><span class="badge badge-success">@item.Status</span></li>
+                    </ul>
+                    <ul class="product-actions">
+                        <li><a href="#"><em class="icon ni ni-cart"></em></a></li>
+                        <li><a href="#"><em class="icon ni ni-heart"></em></a></li>
+                    </ul>
+                </div>
+                <div class="card-inner text-center">
+                    <ul class="product-tags">
+                        <li><a href="#">@item.CategoryType</a></li>
+                    </ul>
+                    <h5 class="product-title"><a href="#">@item.TopicName</a></h5>
+                    <div class="product-price text-primary h6">@item.TopicDescription</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
