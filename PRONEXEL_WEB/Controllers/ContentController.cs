@@ -238,7 +238,8 @@ namespace PRONEXEL_WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> AllQuiz()
         {
-            return View();
+            var res =await _contentRepo.AllQuestionwithAnswer();
+            return View(res);
         }
         [HttpGet]
         public async Task<IActionResult> AddAnswer()

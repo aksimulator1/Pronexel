@@ -1,7 +1,88 @@
-﻿
+﻿@model IEnumerable<PRONEXEL_Data.Models.Dto.QuestionViewModel>
 @{
     ViewData["Title"] = "AllQuiz";
 }
+<table class="datatable-init-export nowrap table">
+    <thead>
+        <tr>
+            <th>Question</th>
+            <th>Category</th>
+            <th>Created On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var modalId = "modal-" + item.Quiz.ID;
+            <tr>
+                <td>@item.Quiz.Title</td>
+                <td>@item.Quiz.CatId</td>
+                <td>@item.Quiz.CreatedOn.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#@modalId">Details</button>
+                    <a href="/Questions/Edit?id=@item.Quiz.ID" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="/Questions/Delete?id=@item.Quiz.ID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-<h1>AllQuiz</h1>
+<!-- 🔽 All Modals should go outside the table -->
+@foreach (var item in Model)
+{
+    var modalId = "modal-" + item.Quiz.ID;
+    <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Question Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <div class="modal-body">
+                    <!-- Question Image + Text -->
+                    <div class="mb-3">
+                        @if (!string.IsNullOrEmpty(item.Quiz.QuestionMedia))
+                        {
+                            <img src="@Url.Content(item.Quiz.QuestionMedia)" width="100" class="mb-2 d-block" />
+                        }
+                        <h5>@item.Quiz.Title</h5>
+                    </div>
+
+                    <hr />
+
+                    <!-- Answers -->
+                    <h6>Answers:</h6>
+                    <div class="row">
+                        @foreach (var ans in item.Answers)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <div class="card p-2 @((ans.IsCorrect ? "border-success" : "border-secondary"))">
+                                    @if (!string.IsNullOrEmpty(ans.AnswerMedia))
+                                    {
+                                        <img src="@Url.Content(ans.AnswerMedia)" width="50" class="mb-2 d-block" />
+                                    }
+                                    <div>
+                                        <strong>@ans.AnswerText</strong>
+                                        @if (ans.IsCorrect)
+                                        {
+                                            <span class="badge badge-success ml-1">Correct</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

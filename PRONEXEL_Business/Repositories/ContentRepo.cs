@@ -187,6 +187,20 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
+
+        public async Task<List<QuizAnswer>> AllAnswers()
+        {
+            try
+            {
+
+                var res = await databaseService.ExecuteStoredProcedureAsync<QuizAnswer>("AllQuizAnswers");
+                return res.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<string> AddAnswer(QuizAnswer quizAnswer)
         {
             try
@@ -207,6 +221,33 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
+
+        public async Task<List<QuestionViewModel>> AllQuestionwithAnswer()
+        {
+            try
+            {
+                var questions = await AllQuestion(); // Prefer camelCase for local vars
+                var answers = await AllAnswers();
+
+                var questionViewModels = questions
+                    .Where(q => !q.IsDelete)
+                    .Select(q => new QuestionViewModel
+                    {
+                        Quiz = q,
+                        Answers = answers
+                            .Where(a => a.QuestionID == q.ID && !a.IsDelete)
+                            .ToList()
+                    })
+                    .ToList();
+
+                return questionViewModels;
+            }
+            catch (Exception)
+            {
+                throw; // Consider logging here
+            }
+        }
+
 
 
     }
