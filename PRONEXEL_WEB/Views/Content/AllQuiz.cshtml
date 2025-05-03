@@ -45,32 +45,29 @@
 
                 <div class="modal-body">
                     <!-- Question Image + Text -->
-                    <div class="mb-3">
+                    <div class="mb-4">
                         @if (!string.IsNullOrEmpty(item.Quiz.QuestionMedia))
                         {
-                            <img src="@Url.Content(item.Quiz.QuestionMedia)" width="100" class="mb-2 d-block" />
+                            <img src="@Url.Content(item.Quiz.QuestionMedia)" width="120" class="mb-2 d-block" />
                         }
                         <h5>@item.Quiz.Title</h5>
                     </div>
 
-                    <hr />
-
-                    <!-- Answers -->
                     <h6>Answers:</h6>
                     <div class="row">
                         @foreach (var ans in item.Answers)
                         {
                             <div class="col-md-6 mb-3">
-                                <div class="card p-2 @((ans.IsCorrect ? "border-success" : "border-secondary"))">
+                                <div class="card card-bordered">
                                     @if (!string.IsNullOrEmpty(ans.AnswerMedia))
                                     {
-                                        <img src="@Url.Content(ans.AnswerMedia)" width="50" class="mb-2 d-block" />
+                                        <img src="@Url.Content(ans.AnswerMedia)" class="card-img-top" width="100" alt="Answer Media" />
                                     }
-                                    <div>
-                                        <strong>@ans.AnswerText</strong>
+                                    <div class="card-inner">
+                                        <h6 class="card-title">@ans.AnswerText</h6>
                                         @if (ans.IsCorrect)
                                         {
-                                            <span class="badge badge-success ml-1">Correct</span>
+                                            <span class="badge badge-success">Correct Answer</span>
                                         }
                                     </div>
                                 </div>
@@ -78,6 +75,7 @@
                         }
                     </div>
                 </div>
+
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
