@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Add Quiz";
+}
+
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <div class="nk-block-between g-3">
+            <div class="nk-block-head-content">
+                <h3 class="nk-block-title page-title">Add Quiz</h3>
+            </div>
+            <div class="nk-block-head-content">
+                <div class="toggle-wrap nk-block-tools-toggle">
+                    <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="pageMenu">
+                        <em class="icon ni ni-more-v"></em>
+                    </a>
+                    <div class="toggle-expand-content" data-content="pageMenu">
+                        <ul class="nk-block-tools g-3">
+                            <li class="nk-block-tools-opt">
+                                <a href="~/Quiz/AllQuizzes" class="btn btn-primary">
+                                    <em class="icon ni ni-reports"></em><span>All Quizzes</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <form asp-action="AddQuiz" asp-controller="Content" method="post" enctype="multipart/form-data">
+                <div class="row g-4">
+                    <!-- Category ID -->
+                    <div class="offset-3 col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="CatId">Category</label>
+                            <div class="form-control-wrap">
+                                <select name="CatId" class="form-control" required>
+                                    <option disabled selected value="">-- Select Category --</option>
+                                    @foreach (var cat in ViewBag.cat)
+                                    {
+                                        <option value="@cat.ID">@cat.TopicName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Title -->
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="Title">Question Title</label>
+                            <div class="form-control-wrap">
+                                <textarea name="Title" class="form-control" required ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Media -->
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="QuestionMedia">Question Media</label>
+                            <div class="form-control-wrap">
+                                <input type="file" name="formFile" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Save Quiz</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

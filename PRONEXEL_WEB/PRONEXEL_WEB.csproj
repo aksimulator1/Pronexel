@@ -28,6 +28,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Media\Images\" />
     <Folder Include="wwwroot\Media\Documents\" />
+    <Folder Include="wwwroot\Media\Quiz\" />
     <Folder Include="wwwroot\Media\Video\" />
   </ItemGroup>
 

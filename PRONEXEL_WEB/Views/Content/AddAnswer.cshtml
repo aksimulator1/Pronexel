@@ -1,0 +1,71 @@
+﻿@model PRONEXEL_Data.Models.Dto.QuizAnswer
+
+@{
+    ViewData["Title"] = "Add Quiz Answer";
+}
+
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <h3 class="nk-block-title page-title">Add Quiz Answer</h3>
+    </div>
+
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <form asp-action="AddQuizAnswer" asp-controller="Content" method="post" enctype="multipart/form-data">
+                <div class="row g-4">
+
+
+                    <!-- Quiz ID -->
+                    <div class="offset-3 col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="CatId">Qusetion</label>
+                            <div class="form-control-wrap">
+                            <select name="CatId" class="form-control" required>
+                                <option disabled selected value="">-- Select Qusetion --</option>
+                                @foreach (var cat in ViewBag.Quest)
+                                {
+                                    <option value="@cat.ID">@cat.Title</option>
+                                }
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Answer Text -->
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="AnswerText">Answer Text</label>
+                            <textarea asp-for="AnswerText" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Question Media -->
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-label" for="QuestionMedia">Answer Media</label>
+                            <input type="file" name="formFile" class="form-control" />
+                        </div>
+                    </div>
+
+                    <!-- Is Correct -->
+                    <div class="col-lg-6">
+                        <div class="form-group form-check">
+                            <input asp-for="IsCorrect" class="form-check-input" type="checkbox" />
+                            <label class="form-check-label" for="IsCorrect">Is Correct</label>
+                        </div>
+                    </div>
+
+
+          
+
+                    <!-- Submit -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Save Answer</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

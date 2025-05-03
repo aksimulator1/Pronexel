@@ -11,9 +11,11 @@ namespace PRONEXEL_WEB.Controllers
     public class ContentController : Controller
     {
         private readonly ContentRepo _contentRepo;
-        public ContentController(ContentRepo contentRepo)
+        private readonly MediaRepo mediaRepo;
+        public ContentController(ContentRepo contentRepo,MediaRepo mediaRepo)
         {
                 this._contentRepo = contentRepo;
+            this.mediaRepo = mediaRepo;
         }
         [HttpGet]
         public IActionResult AddCategory()
@@ -213,8 +215,38 @@ namespace PRONEXEL_WEB.Controllers
 
             return RedirectToAction("AllSubTopics");
         }
-
-
+        
+        [HttpGet]
+        public async Task<IActionResult> AddQuiz()
+        {
+            var cat =await _contentRepo.GetTopic();
+            ViewBag.cat = cat;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddQuiz(Quiz quiz,IFormFile formFile)
+        {
+            var cat = await _contentRepo.GetTopic();
+            ViewBag.cat = cat;
+            if(formFile!=null)
+            {
+                quiz.QuestionMedia = mediaRepo.Addfilesinserver(formFile, "Quiz");
+            }
+            var res = await _contentRepo.AddQuestion(quiz);
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> AllQuiz()
+        {
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> AddAnswer()
+        {
+            var Quest = await _contentRepo.AllQuestion();
+            ViewBag.Quest = Quest;
+            return View();
+        }
 
     }
 }

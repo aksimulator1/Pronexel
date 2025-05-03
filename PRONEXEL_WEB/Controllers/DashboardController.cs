@@ -5,7 +5,7 @@ namespace PRONEXEL_WEB.Controllers
 {
     public class DashboardController : Controller
     {
-    {
+    
         public IActionResult Index()
         {
             // Sample data - replace with DB call

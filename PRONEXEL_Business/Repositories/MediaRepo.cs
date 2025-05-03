@@ -39,6 +39,10 @@ namespace PRONEXEL_Business.Repositories
             {
                 folderName = "Documents";
             }
+            else if (FileType.ToLower() == "Quiz" || FileType.ToLower() == "quiz")
+            {
+                folderName = "Quiz";
+            }
 
             // Combine path
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Media", folderName);
