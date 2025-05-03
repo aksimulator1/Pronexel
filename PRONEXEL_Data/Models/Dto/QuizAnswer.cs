@@ -12,11 +12,11 @@ namespace PRONEXEL_Data.Models.Dto
     {
         public string AnswerID { get; set; }
 
-        public string QuizID { get; set; }
+        public string QuestionID { get; set; }
 
         public string AnswerText { get; set; }
 
-        public string QuestionMedia { get; set; }
+        public string AnswerMedia { get; set; }
 
         public bool IsCorrect { get; set; }
 

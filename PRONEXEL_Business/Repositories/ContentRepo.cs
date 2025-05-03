@@ -187,6 +187,26 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
+        public async Task<string> AddAnswer(QuizAnswer quizAnswer)
+        {
+            try
+            {
+                var pram = new
+                {
+                    QuestionID = quizAnswer.QuestionID,
+                    AnswerMedia= quizAnswer.AnswerMedia,
+                    IsCorrect= quizAnswer.IsCorrect,
+                    AnswerText= quizAnswer.AnswerText,
+
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("InsertQuizAnswer", pram);
+                return res.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
     }

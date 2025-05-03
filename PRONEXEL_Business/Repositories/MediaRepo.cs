@@ -42,6 +42,10 @@ namespace PRONEXEL_Business.Repositories
             else if (FileType.ToLower() == "Quiz" || FileType.ToLower() == "quiz")
             {
                 folderName = "Quiz";
+            }  
+            else if (FileType.ToLower() == "Answer" || FileType.ToLower() == "answer")
+            {
+                folderName = "Answer";
             }
 
             // Combine path

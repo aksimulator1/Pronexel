@@ -11,23 +11,23 @@
 
     <div class="card card-bordered">
         <div class="card-inner">
-            <form asp-action="AddQuizAnswer" asp-controller="Content" method="post" enctype="multipart/form-data">
+            <form asp-action="AddAnswer" asp-controller="Content" method="post" enctype="multipart/form-data">
                 <div class="row g-4">
 
 
                     <!-- Quiz ID -->
                     <div class="offset-3 col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="CatId">Qusetion</label>
+                            <label class="form-label" for="QuestionID">Qusetion</label>
                             <div class="form-control-wrap">
-                            <select name="CatId" class="form-control" required>
-                                <option disabled selected value="">-- Select Qusetion --</option>
-                                @foreach (var cat in ViewBag.Quest)
-                                {
-                                    <option value="@cat.ID">@cat.Title</option>
-                                }
-                            </select>
-                        </div>
+                                <select name="QuestionID" class="form-control" required>
+                                    <option disabled selected value="">-- Select Qusetion --</option>
+                                    @foreach (var cat in ViewBag.Quest)
+                                    {
+                                        <option value="@cat.ID">@cat.Title</option>
+                                    }
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -56,7 +56,7 @@
                     </div>
 
 
-          
+
 
                     <!-- Submit -->
                     <div class="col-12">
@@ -65,7 +65,12 @@
                         </div>
                     </div>
                 </div>
-            </form>
+                @if (ViewBag.res!=null)
+                {
+                    <h6 class="text-center text-danger">@ViewBag.res</h6>
+
+                }
+                   </form>
         </div>
     </div>
 </div>

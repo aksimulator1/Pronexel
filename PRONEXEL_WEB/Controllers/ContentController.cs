@@ -246,6 +246,20 @@ namespace PRONEXEL_WEB.Controllers
             var Quest = await _contentRepo.AllQuestion();
             ViewBag.Quest = Quest;
             return View();
+        }  
+        [HttpPost]
+        public async Task<IActionResult> AddAnswer(QuizAnswer quizAnswer,IFormFile formFile)
+        {
+            var Quest = await _contentRepo.AllQuestion();
+            ViewBag.Quest = Quest;
+            quizAnswer.AnswerMedia=mediaRepo.Addfilesinserver(formFile,"Answer");
+            var res = await _contentRepo.AddAnswer(quizAnswer);
+            if(res!= "Success")
+            {
+                ViewBag.res = res;
+            }
+         
+            return View();
         }
 
     }
