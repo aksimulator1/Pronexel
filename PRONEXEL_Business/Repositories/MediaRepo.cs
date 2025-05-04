@@ -81,6 +81,33 @@ namespace PRONEXEL_Business.Repositories
             
           
         }
+        public async Task<string> EditMediaIntoDbAsync(Media media)
+        {
+            var pram = new
+            {
+                SubTopicID = media.SubTopicID,
+                MediaType = media.MediaType,
+                MediaURL = media.MediaURL,
+                MediaId=media.MediaID,
+                Title = "New isnsert"
+            };
+            var res = await databaseService.ExecuteStoredProcedureAsync<string>("EditMedia", pram);
+            return res.FirstOrDefault();
+
+
+        }
+        public async Task<string> DeleteMediaIntoDbAsync(string MediaId)
+        {
+            var pram = new
+            {
+            
+                MediaId = MediaId
+            };
+            var res = await databaseService.ExecuteStoredProcedureAsync<string>("DeleteMedia", pram);
+            return res.FirstOrDefault();
+
+
+        }
         public async Task<List<Media>> AllMedia()
         {
             var res = await databaseService.ExecuteStoredProcedureAsync<Media>("GetAllMedia");

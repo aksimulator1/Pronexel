@@ -21,6 +21,34 @@ namespace PRONEXEL_WEB.Controllers
             return View();
         }
         [HttpGet]
+        public async Task<IActionResult> EditMedia(string ID)
+        {
+            ViewBag.AllsubTopics = await contentRepo.GetSubTopics();
+            var res = await mediaRepo.AllMedia();
+            return View(res.Where(x=>x.MediaID==ID).FirstOrDefault());
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteMedia(string ID)
+        {
+            var data = await mediaRepo.DeleteMediaIntoDbAsync(ID);
+
+            return RedirectToAction("AllMedia");
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditMedia(string MediaID, string ID, string MediaType, string Path)
+        {
+            Media media = new Media();
+            media.MediaURL = Path;
+            media.SubTopicID = ID;
+            media.MediaType = MediaType;
+            media.MediaID = MediaID;
+            var res = await mediaRepo.EditMediaIntoDbAsync(media);
+
+            ViewBag.AllsubTopics = await contentRepo.GetSubTopics();
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> AllMedia()
         {
             var res = await mediaRepo.AllMedia();

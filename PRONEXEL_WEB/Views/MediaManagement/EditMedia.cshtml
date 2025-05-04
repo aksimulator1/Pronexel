@@ -1,0 +1,158 @@
+﻿@model PRONEXEL_Data.Models.Dto.Media
+@{
+    ViewData["Title"] = "EditMedia";
+}
+
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h4 class="title nk-block-title">Basic Details for Add Media</h4>
+        </div>
+    </div>
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-head">
+                <h5 class="card-title">Media Info</h5>
+            </div>
+            <form id="mediaForm" asp-action="AddMedia" asp-controller="MediaManagement" method="post" enctype="multipart/form-data">
+                <div class="row g-4">
+                    <!-- Sub Topics -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="user-role">Sub Topics</label>
+                            <div class="form-control-wrap">
+                                <select name="ID" class="form-control" id="user-role" required>
+                                    @for (int i = 0; i < ViewBag.AllsubTopics.Count; i++)
+                                    {
+                                        if (ViewBag.AllsubTopics[i].SubTopicID==Model.SubTopicID)
+                                        {
+                                            <option selected value="@ViewBag.AllsubTopics[i].SubTopicID">@ViewBag.AllsubTopics[i].SubTopicName</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option value="@ViewBag.AllsubTopics[i].SubTopicID">@ViewBag.AllsubTopics[i].SubTopicName</option>
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Media Type -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="media-type">Media Type</label>
+                            <div class="form-control-wrap">
+                                <select name="MediaType" asp-for="MediaType" class="form-control" id="media-type" required>
+                                    <option value="">Select Type</option>
+                                    <option value="Video">Video</option>
+                                    <option value="Images">Images</option>
+                                    <option value="Documents">Documents</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="MediaID" name="MediaID" value="@Model.MediaID" />
+                    <!-- Media Upload -->
+                    <div class="col-lg-6" id="media-upload-section" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label" for="media-file">Upload File</label>
+                            <div class="form-control-wrap">
+                                <input type="file" class="form-control" id="media-file" name="file" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Path Input -->
+                    <input type="hidden" name="Path" class="form-control" id="media-url" required>
+
+                    <!-- Upload Progress -->
+                    <div class="col-12">
+                        <div id="upload-progress" class="progress progress-lg mt-2" style="background-color: #052dcc; display: none;">
+                            <div id="upload-progress-bar" class="progress-bar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Save Media</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Show media upload section and set accepted file types
+        $('#media-type').change(function () {
+            var selectedType = $(this).val();
+            if (selectedType === "Video" || selectedType === "Images" || selectedType === "Documents") {
+                $('#media-upload-section').show();
+
+                if (selectedType === "Video") {
+                    $('#media-file').attr('accept', 'video/mp4,video/x-m4v,video/*'); // Allow MP4 and others
+                } else if (selectedType === "Images") {
+                    $('#media-file').attr('accept', 'image/*');
+                } else if (selectedType === "Documents") {
+                    $('#media-file').attr('accept', '.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx');
+                }
+            } else {
+                $('#media-upload-section').hide();
+                $('#media-file').val('');
+                $('#upload-progress').hide();
+            }
+        });
+
+        // Handle file upload via AJAX with progress
+        $('#media-file').change(function () {
+            var file = this.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('file', file);
+                formData.append('FileType', $('#media-type').val());
+
+                $('#upload-progress').show();
+                $('#upload-progress-bar').css('width', '0%').text('0%');
+
+                $.ajax({
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                                $('#upload-progress-bar').css('width', percentComplete + '%').text(percentComplete + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    url: '/MediaManagement/UploadMedia', // Backend API
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#media-url').val(response); // Assume response is path
+                        alert('✅ Media uploaded successfully!');
+                        $('#upload-progress-bar').css('width', '100%').text('Upload Complete');
+                        setTimeout(function () {
+                            $('#upload-progress').hide();
+                        }, 1000);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('❌ Failed to upload media. Server says: ' + xhr.responseText);
+                        $('#upload-progress').hide();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
