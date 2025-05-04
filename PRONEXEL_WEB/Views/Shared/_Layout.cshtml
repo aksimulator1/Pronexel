@@ -16,6 +16,9 @@
     <link id="skin-default" rel="stylesheet" href="~/theme/assets/css/theme.css?ver=2.5.0">
     <script src="~/theme/assets/js/bundle.js?ver=2.5.0"></script>
     <script src="~/theme/assets/js/scripts.js?ver=2.5.0"></script>
+    <script src="~/theme/assets/js/libs/jstree.js"></script>
+    <script src="~/theme/assets/js/example-tree.js"></script>
+    <link href="~/theme/assets/css/libs/jstree.css" rel="stylesheet" />
 </head>
 
 <body class="nk-body npc-default has-apps-sidebar has-sidebar ">
@@ -379,15 +382,15 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- main header e -->
                 <div class="nk-sidebar" data-content="sidebarMenu">
                     <div class="nk-sidebar-inner" data-simplebar>
+                        <div id="language-tree"></div>
                         <ul class="nk-menu nk-menu-md">
 
 
-                            <li class="nk-menu-heading">
-                                <h6 class="overline-title text-primary-alt">Pre-Built Pages</h6>
-                            </li><!-- .nk-menu-heading -->
+                          
                             @if (User.IsInRole("SuperAdmin") || (User.IsInRole("Admin")))
                             {
                                 <li class="nk-menu-item has-sub">
@@ -515,15 +518,23 @@
                                             </a>
 
                                         </li>
+                                 
                                     </ul>
-                                </li>
-                            }
 
+                         
+
+                                </li>
+                            
+
+                            }
+                                  
                         </ul><!-- .nk-menu -->
+
                     </div>
                 </div>
                 <!-- content s -->
                 <div class="nk-content ">
+                   
                     <div class="container-fluid">
                         <div class="nk-content-inner">
                             <div class="nk-content-body">
@@ -540,8 +551,53 @@
     </div>
     <!-- app-root e -->
     <!-- JavaScript -->
+    <script>
+        $(document).ready(function () {
+          $('#language-tree').jstree({
+            'core': {
+              'data': [
+                {
+                  "text": "<strong style='color:#f36c37;'>Language</strong>",
+                  "state": {
+                    "opened": false,
+                    "disabled": true
+                  },
+                  "icon": false,
+                  "children": [
+                    {
+                      "text": "<span style='color:#f36c37;'>English</span>",
+                   
+                    },
+                    { "text": "<span style='color:#f36c37;'>Arabic</span>" },
+                    { "text": "<span style='color:#f36c37;'>Portuguese</span>" },
+                    { "text": "<span style='color:#f36c37;'>Indonesian</span>" },
+                    { "text": "<span style='color:#f36c37;'>French</span>" },
+                    { "text": "<span style='color:#f36c37;'>Spanish</span>" }
+                  ]
+                }
+              ],
+              'multiple': false  // Prevent default multi-selection
+            },
+            'plugins': ["checkbox", "wholerow"],
+            'checkbox': {
+              'keep_selected_style': false,
+              'three_state': false,
+              'tie_selection': true
+            }
+          });
+
+          // Enforce only one selection at a time
+          $('#language-tree').on("changed.jstree", function (e, data) {
+            if (data.selected.length > 1) {
+              var tree = $('#language-tree').jstree(true);
+              tree.deselect_all();
+              tree.select_node(data.node);
+            }
+          });
+        });
+    </script>
 
 
-</body>
+        </body>
 
 </html>
