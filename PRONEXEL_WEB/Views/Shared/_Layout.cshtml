@@ -2,6 +2,14 @@
 <html lang="zxx" class="js">
 
 <head>
+    <style>
+    /* Change selected node text color to red */
+    #category-tree .jstree-clicked,
+    #language-tree .jstree-clicked {
+        color: #f36c37 !important;
+    }
+</style>
+
     <base href="../">
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
@@ -386,7 +394,12 @@
                 <!-- main header e -->
                 <div class="nk-sidebar" data-content="sidebarMenu">
                     <div class="nk-sidebar-inner" data-simplebar>
+
+                        @if(User.IsInRole("ApplicationUser"))
+                        {
                         <div id="language-tree"></div>
+                        <div id="category-tree"></div>
+                        }
                         <ul class="nk-menu nk-menu-md">
 
 
@@ -502,9 +515,9 @@
 
                                 <!-- .nk-menu-item -->
                             }
-                            else if(User.IsInRole("ApplicationUser"))
+                            else if(User.IsInRole("ApplicationUsersss"))
                             {
-                                <li class="nk-menu-item has-sub">
+                               <li class="nk-menu-item has-sub">
                                     <a href="#" class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon"><em class="icon ni ni-book-read"></em></span>
                                         <span class="nk-menu-text">Courses</span>
@@ -523,7 +536,7 @@
 
                          
 
-                                </li>
+                                </li> 
                             
 
                             }
@@ -595,7 +608,81 @@
             }
           });
         });
+        $(document).ready(function () {
+            loadCategoryTree();
+        });
+
+   function loadCategoryTree() {
+    $.ajax({
+        url: '/JsonSide/AllCategroy',
+        type: 'GET',
+        success: function (categories) {
+            const categoryPromises = categories.map(function (category) {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        url: '/JsonSide/AllSubCategroy',
+                        type: 'GET',
+                        data: { categoryId: category.id },
+                        success: function (subcategories) {
+                            const children = subcategories.map(function (sub) {
+                                return {
+                                    text: sub.subTopicName
+                                };
+                            });
+
+                            resolve({
+                                text: category.topicName,
+                                children: children
+                            });
+                        },
+                        error: function () {
+                            console.error(`Error loading subcategories for category ${category.id}`);
+                            resolve({
+                                text: category.topicName,
+                                children: []
+                            });
+                        }
+                    });
+                });
+            });
+
+            Promise.all(categoryPromises).then(function (orderedTreeData) {
+                initializeJsTree(orderedTreeData);
+            });
+        },
+        error: function () {
+            console.error('Failed to load categories');
+        }
+    });
+}
+
+
+                function initializeJsTree(treeData) {
+            $('#category-tree').jstree({
+                'core': {
+                    'data': treeData,
+                    'multiple': false
+                },
+                'plugins': ["wholerow"]
+            });
+
+            $('#category-tree').on("changed.jstree", function (e, data) {
+                if (data.selected.length > 0) {
+                    const selectedSubcategory = data.node.text;
+
+                    // Get selected language from language-tree
+                    const selectedLangId = $('#language-tree').jstree('get_selected')[0];
+                    const langNode = $('#language-tree').jstree(true).get_node(selectedLangId);
+                    const selectedLanguage = langNode ? $(langNode.text).text() : "None";
+
+                    console.log("Selected Subcategory:", selectedSubcategory);
+                    console.log("Selected Language:", selectedLanguage);
+                }
+            });
+        }
+
     </script>
+
 
 
         </body>
