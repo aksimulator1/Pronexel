@@ -1,0 +1,83 @@
+﻿@model IEnumerable<PRONEXEL_Data.Models.Dto.Media>
+
+@{
+    Layout = null;
+}
+
+        <div class="nk-content ">
+            <div class="container-fluid">
+                <div class="nk-content-inner">
+                    <div class="nk-content-body">
+                        <div class="nk-block-head nk-block-head-sm">
+                            <div class="nk-block-between g-3">
+                                <div class="nk-block-head-content">
+                                    <h3 class="nk-block-title page-title">Content Library</h3>
+                                    <div class="nk-block-des text-soft">
+                                        <p>You have total <span class="text-base">@Model.Count()</span> Files</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- .nk-block-head -->
+
+                        <div class="nk-block">
+                            <div class="row g-gs">
+                                @foreach (var item in Model)
+                                {
+                                    <div class="col-sm-6 col-xxl-3">
+                                        <div class="gallery card card-bordered">
+                                            <div class="gallery-image">
+                                                @if (!string.IsNullOrEmpty(item.MediaURL))
+                                                {
+                                                    if (item.MediaType == "Video")
+                                                    {
+                                                        <video class="w-100 rounded-top" controls poster="/images/video-placeholder.jpg" style="height: 200px; object-fit: cover;">
+                                                            <source src="@item.MediaURL" type="video/mp4" />
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    }
+                                                    else if (item.MediaType == "Images")
+                                                    {
+                                                        <img class="w-100 rounded-top" src="@item.MediaURL" alt="Image" style="height: 200px; object-fit: cover;" />
+                                                    }
+                                                    else if (item.MediaType == "Documents")
+                                                    {
+                                                        <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                                                            <a href="@item.MediaURL" target="_blank" class="btn btn-sm btn-primary">
+                                                                📄 View Document
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="w-100 rounded-top" src="/images/stock/a.jpg" alt="Unknown Media" />
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <img class="w-100 rounded-top" src="/images/stock/a.jpg" alt="No media available" />
+                                                }
+                                            </div>
+
+                                            <div class="gallery-body card-inner align-center justify-between flex-wrap g-2">
+                                                <div class="user-card">
+                                                    <div class="user-avatar"></div>
+                                                    <div class="user-info">
+                                                        <span class="lead-text">@item.SubTopicID</span><br />
+                                                        <span class="sub-text">@item.Title</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <!-- Optional controls like download or delete -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div><!-- .nk-block -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+  

@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="nk-block nk-block-lg">
+    <div class="nk-block-head">
+        <div class="nk-block-head-content">
+            <h4 class="title nk-block-title">My Courses</h4>
+        </div>
+    </div>
+    <div class="card card-bordered">
+        <div class="card-inner">
+    
+                <div class="row g-4">
+           
+                    <!-- Role -->
+                  <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="user-role">Category</label>
+                            <div class="form-control-wrap">
+                                <select name="Category" class="form-control" id="Category" required>
+                                  
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Role -->
+                    <!-- SubCategory -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="SubCategory">Sub Category</label>
+                            <div class="form-control-wrap">
+                                <select name="SubCategory" class="form-control" id="SubCategory" required>
+                                    <option value="">Select Sub Category</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                <div id="DivContainerForCustForm">
+                </div>
+ 
+        </div>
+    </div>
+</div>
+</div>
+<script>
+        $(document).ready(function () {
+        // Initially load categories
+        GetAllCategory();
+
+        // Listen for category change
+        $('#Category').on('change', function () {
+            const selectedCategoryId = $(this).val();
+            if (selectedCategoryId) {
+                GetSubCategories(selectedCategoryId);
+            } else {
+                $('#SubCategory').empty().append('<option value="">Select Sub Category</option>');
+            }
+        });
+            $("#DivContainerForCustForm").load("@Url.Action("AllMedia", "TrainingModule")");
+    });
+
+    // Function to fetch and assign subcategories
+    function GetSubCategories(categoryId) {
+        $.ajax({
+            url: '/JsonSide/AllSubCategroy', // Replace with your actual endpoint
+            type: 'GET',
+            data: { categoryId: categoryId },  // Pass as query param
+            success: function (response) {
+                console.log(response);
+                $('#SubCategory').empty().append('<option value="">Select Sub Category</option>');
+
+                $.each(response, function (index, sub) {
+                    $('#SubCategory').append(
+                        $('<option>', {
+                            value: sub.subTopicID,
+                            text: sub.subTopicName  // Adjust based on your actual subcategory field names
+                        })
+                    );
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching subcategories:', error);
+            }
+        });
+    }
+
+
+
+       function GetAllCategory() {
+           
+                $.ajax({
+                    url: '/JsonSide/AllCategroy'
+                    , type: 'GET'
+                    , contentType: 'application/json'
+                    , success: function (response) {
+                        $('#Category').empty();
+
+            // Add a default option
+            $('#Category').append('<option value="">Select Category</option>');
+
+            // Loop through response and add each item
+            $.each(response, function (index, item) {
+                $('#Category').append(
+                    $('<option>', {
+                        value: item.id,
+                        text: item.topicName
+                    })
+                );
+            });
+                    }
+                });
+
+            
+       }
+</script>
