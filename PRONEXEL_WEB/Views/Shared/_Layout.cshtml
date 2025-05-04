@@ -674,6 +674,7 @@
                     const selectedLangId = $('#language-tree').jstree('get_selected')[0];
                     const langNode = $('#language-tree').jstree(true).get_node(selectedLangId);
                     const selectedLanguage = langNode ? $(langNode.text).text() : "None";
+                                            window.location.href = '/TrainingModule/AllMedia?SubcatName=' + encodeURIComponent(selectedSubcategory) + '&Language=' + encodeURIComponent(selectedLanguage);
 
                     console.log("Selected Subcategory:", selectedSubcategory);
                     console.log("Selected Language:", selectedLanguage);

@@ -17,7 +17,7 @@ namespace PRONEXEL_WEB.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> AllMedia()
+        public async Task<IActionResult> AllMedia(string SubcatName,string Language)
         {
             var res = await mediaRepo.AllMedia();
             return View(res);
