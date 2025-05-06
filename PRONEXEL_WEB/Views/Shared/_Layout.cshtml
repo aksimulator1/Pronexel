@@ -2,13 +2,7 @@
 <html lang="zxx" class="js">
 
 <head>
-    <style>
-    /* Change selected node text color to red */
-    #category-tree .jstree-clicked,
-    #language-tree .jstree-clicked {
-        color: #f36c37 !important;
-    }
-</style>
+  
 
     <base href="../">
     <meta charset="utf-8">
@@ -23,7 +17,7 @@
     <link rel="stylesheet" href="~/theme/assets/css/dashlite.css?ver=2.5.0">
     <link id="skin-default" rel="stylesheet" href="~/theme/assets/css/theme.css?ver=2.5.0">
     <script src="~/theme/assets/js/bundle.js?ver=2.5.0"></script>
-    <script src="~/theme/assets/js/scripts.js?ver=2.5.0"></script>
+    <script src="~/theme/assets/js/scripts.js"></script>
     <script src="~/theme/assets/js/libs/jstree.js"></script>
     <script src="~/theme/assets/js/example-tree.js"></script>
     <link href="~/theme/assets/css/libs/jstree.css" rel="stylesheet" />
@@ -377,7 +371,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div class="dropdown-inner">
+                                                <ul class="link-list">
+                                                    <li><a href="html/user-profile-regular.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
+                                                    <li><a href="html/user-profile-setting.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
+                                                    <li><a href="html/user-profile-activity.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li>
+                                                    <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
+                                                </ul>
+                                            </div>
                                             <div class="dropdown-inner">
                                                 <ul class="link-list">
                                                     <li><a asp-action="Logout" asp-controller="Account"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
@@ -550,7 +551,7 @@
                    
                     <div class="container-fluid">
                         <div class="nk-content-inner">
-                            <div class="nk-content-body">
+                            <div class="nk-content-body" id="DivContainerForCustForm">
                                @RenderBody()
                             </div>
                         </div>
@@ -674,13 +675,15 @@
                     const selectedLangId = $('#language-tree').jstree('get_selected')[0];
                     const langNode = $('#language-tree').jstree(true).get_node(selectedLangId);
                     const selectedLanguage = langNode ? $(langNode.text).text() : "None";
-                                            window.location.href = '/TrainingModule/AllMedia?SubcatName=' + encodeURIComponent(selectedSubcategory) + '&Language=' + encodeURIComponent(selectedLanguage);
+                    var url = '/TrainingModule/AllMedia?SubcatName=' + encodeURIComponent(selectedSubcategory) + '&Language=' + encodeURIComponent(selectedLanguage);
+                    $("#DivContainerForCustForm").load(url);
 
-                    console.log("Selected Subcategory:", selectedSubcategory);
-                    console.log("Selected Language:", selectedLanguage);
+ 
                 }
             });
         }
+     
+
 
     </script>
 
