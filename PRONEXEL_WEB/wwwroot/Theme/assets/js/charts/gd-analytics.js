@@ -230,7 +230,7 @@
   ;
   NioApp.coms.docReady.push(jqvmap_init); // Charts 
 
-  var deviceStatINRata = {
+  var deviceStatusData = {
     labels: ["Desktop", "Mobile", "Tablet"],
     dataUnit: 'People',
     legend: false,

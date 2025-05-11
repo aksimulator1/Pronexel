@@ -24,7 +24,7 @@
   };
   var barChartMultiple = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     datasets: [{
       label: "Income",
       color: "#b695ff",
@@ -38,7 +38,7 @@
   var barChartStacked = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     stacked: true,
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     datasets: [{
       label: "Income",
       color: "#b695ff",

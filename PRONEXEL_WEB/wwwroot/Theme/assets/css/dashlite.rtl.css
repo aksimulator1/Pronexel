@@ -5811,13 +5811,13 @@ input[type="radio"]:checked ~ label { cursor: default; }
 
 .ni-sign-try-alt:before { content: ""; }
 
-.ni-sign-INR-alt:before { content: ""; }
+.ni-sign-usd-alt:before { content: ""; }
 
-.ni-sign-INR-alt2:before { content: ""; }
+.ni-sign-usd-alt2:before { content: ""; }
 
-.ni-sign-INRc-alt:before { content: ""; }
+.ni-sign-usdc-alt:before { content: ""; }
 
-.ni-sign-INRt-alt:before { content: ""; }
+.ni-sign-usdt-alt:before { content: ""; }
 
 .ni-sign-visa-alt:before { content: ""; }
 
@@ -7261,7 +7261,7 @@ input[type="radio"]:checked ~ label { cursor: default; }
 
 .ni-truck:before { content: ""; }
 
-.ni-sign-INR:before { content: ""; }
+.ni-sign-usd:before { content: ""; }
 
 .ni-sign-dollar:before { content: ""; }
 
@@ -7335,13 +7335,13 @@ input[type="radio"]:checked ~ label { cursor: default; }
 
 .ni-monero:before { content: ""; }
 
-.ni-sign-INRc:before { content: ""; }
+.ni-sign-usdc:before { content: ""; }
 
 .ni-sign-steller:before { content: ""; }
 
 .ni-sign-steem:before { content: ""; }
 
-.ni-sign-INRt:before { content: ""; }
+.ni-sign-usdt:before { content: ""; }
 
 .ni-tether:before { content: ""; }
 

@@ -14,7 +14,7 @@
   };
   var profitCM = {
     labels: ["01 Nov", "02 Nov", "03 Nov", "04 Nov", "05 Nov", "06 Nov", "07 Nov", "08 Nov", "09 Nov", "10 Nov", "11 Nov", "12 Nov", "13 Nov", "14 Nov", "15 Nov", "16 Nov", "17 Nov", "18 Nov", "19 Nov", "20 Nov", "21 Nov", "22 Nov", "23 Nov", "24 Nov", "25 Nov", "26 Nov", "27 Nov", "28 Nov", "29 Nov", "30 Nov"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     datasets: [{
       label: "Send",
       color: "#5d7ce0",
@@ -291,7 +291,7 @@
   });
   var totalDeposit = {
     labels: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Active User",
@@ -301,7 +301,7 @@
   };
   var totalWithdraw = {
     labels: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Active User",
@@ -311,7 +311,7 @@
   };
   var totalBalance = {
     labels: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Active User",
@@ -413,7 +413,7 @@
   });
   var planPurchase = {
     labels: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Active User",

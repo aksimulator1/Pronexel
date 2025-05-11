@@ -11,5 +11,7 @@ namespace PRONEXEL_Data.Models.CodeFirst
     public class ApplicationUser : IdentityUser
     {
         public string DisplayName { get; set; }
+        public string ContactInfo { get; set; }
+        public string Address { get; set; }
     }
 }

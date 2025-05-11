@@ -106,7 +106,7 @@
   });
   var orderOverview = {
     labels: ["19 Dec", "20 Dec", "21 Dec", "22 Dec", "23 Dec", "24 Dec", "25 Dec", "26 Dec", "27 Dec", "28 Dec", "29 Dec", "30 Dec", "31 Dec", "01 Jan"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     datasets: [{
       label: "Buy Orders",
       color: "#8feac5",
@@ -235,7 +235,7 @@
   });
   var userActivity = {
     labels: ["01 Nov", "02 Nov", "03 Nov", "04 Nov", "05 Nov", "06 Nov", "07 Nov", "08 Nov", "09 Nov", "10 Nov", "11 Nov", "12 Nov", "13 Nov", "14 Nov", "15 Nov", "16 Nov", "17 Nov", "18 Nov", "19 Nov", "20 Nov", "21 Nov"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Direct Join",
@@ -462,7 +462,7 @@
   });
   var salesRevenue = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Sales Revenue",
@@ -472,7 +472,7 @@
   };
   var activeSubscription = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Active User",
@@ -482,7 +482,7 @@
   };
   var totalSubscription = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-    dataUnit: 'INR',
+    dataUnit: 'USD',
     stacked: true,
     datasets: [{
       label: "Active User",
