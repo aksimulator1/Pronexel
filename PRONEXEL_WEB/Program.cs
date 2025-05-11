@@ -34,6 +34,7 @@ builder.Services.AddRazorPages()
 builder.Services.AddTransient<UserRepo>();
 builder.Services.AddTransient<ContentRepo>();
 builder.Services.AddTransient<MediaRepo>();
+builder.Services.AddTransient<ThemeRepo>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureApplicationCookie(options =>
 {

@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewData["Title"] = "DarkMood";
+}
+<div class="nk-block nk-block-lg">
+   
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <div class="card-head">
+                <h5 class="card-title">Manage Theme</h5>
+            </div>
+            <form id="userForm" asp-action="AddUser" asp-controller="Account" method="post">
+                <div class="row g-4">
+                    <!-- First Name -->
+                   
+                    <!-- Last Name -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="last-name">Last Name</label>
+                            <div class="form-control-wrap">
+                                <input type="text" name="LastName" class="form-control" id="last-name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="email-address">Email address</label>
+                            <div class="form-control-wrap">
+                                <input type="email" name="UserEmails" class="form-control" id="email-address" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="email-address">Contact No</label>
+                            <div class="form-control-wrap">
+                                <input type="tel" name="ContactInfo" class="form-control" id="ContactInfo" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="email-address">Address</label>
+                            <div class="form-control-wrap">
+                                <input type="text" name="Address" class="form-control" id="Address" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Username -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="user-name">User Name</label>
+                            <div class="form-control-wrap">
+                                <input type="text" name="UserName" class="form-control" id="user-name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Password -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <div class="form-control-wrap">
+                                <input type="password" name="Password" class="form-control" id="password"
+                                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$"
+                                       title="Min 8 chars, 1 uppercase, 1 lowercase, 1 special character"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="confirm-password">Confirm Password</label>
+                            <div class="form-control-wrap">
+                                <input type="password" name="ConfirmPassword" class="form-control" id="confirm-password" required>
+                                <small id="passwordMismatch" style="color:red; display:none;">Passwords do not match</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Role -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="user-role">User Role</label>
+                            <div class="form-control-wrap">
+                                <select name="Userrole" class="form-control" id="user-role" required>
+                                 @*    @for (int i = 0; i < ViewBag.rlist.Count; i++)
+                                    {
+                                        <option value="@ViewBag.rlist[i].Rid">@ViewBag.rlist[i].RoleName</option>
+                                    } *@
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Submit -->
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary">Save Information</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
