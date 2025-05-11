@@ -7,17 +7,11 @@
 
 
 <div class="nk-block nk-block-lg">
-    <div class="nk-block-head">
-        <div class="nk-block-head-content">
-            <h4 class="title nk-block-title">Basic Details for Users</h4>
-            <div class="nk-block-des">
-            </div>
-        </div>
-    </div>
+
     <div class="card card-bordered">
         <div class="card-inner">
             <div class="card-head">
-                <h5 class="card-title">User Info</h5>
+                <h5 class="card-title">Basic Details for User</h5>
             </div>
             <form asp-action="EditUsers" asp-controller="Account" method="post">
                 <div class="row g-4">
@@ -36,6 +30,22 @@
                             <label class="form-label" for="full-name-1">User Name</label>
                             <div class="form-control-wrap">
                                 <input type="text" asp-for="UserName" name="UserName" class="form-control" id="full-name-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="full-name-1">Contact</label>
+                            <div class="form-control-wrap">
+                                <input type="tel" asp-for="ContactInfo" name="ContactInfo" class="form-control" id="full-name-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="full-name-1">Address</label>
+                            <div class="form-control-wrap">
+                                <input type="text" asp-for="Address" name="Address" class="form-control" id="full-name-1">
                             </div>
                         </div>
                     </div>
@@ -77,7 +87,7 @@
 
                     <div class="col-12">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-lg btn-primary">Save Information</button>
+                            <button type="submit" class="btn btn-lg btn-primary">Update Information</button>
                         </div>
                     </div>
                 </div>

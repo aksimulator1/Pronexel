@@ -15,5 +15,7 @@ namespace PRONEXEL_Data.Models.Dto
         public string UserEmails { get; set; }
         public string Userrole { get; set; }
         public string Password { get; set; }
+        public string ContactInfo { get; set; }
+        public string Address { get; set; }
     }
 }

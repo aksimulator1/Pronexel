@@ -39,7 +39,7 @@ namespace PRONEXEL_WEB.Controllers
            await _userRepo.CreateRoles();
             return View("Login");
         }
-        [Authorize(Roles ="SuperAdmin")]
+        [Authorize(Roles ="SuperAdmin,Admin")]
         [HttpGet]
         public async Task<IActionResult> AddUser()
         {

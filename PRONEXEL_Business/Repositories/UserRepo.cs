@@ -58,7 +58,8 @@ namespace PRONEXEL_Business.Repositories
         {
             try
             {
-                var data = new ApplicationUser {DisplayName=userDto.FirstName+" "+userDto.LastName, UserName = userDto.UserName, Email = userDto.UserEmails, PasswordHash = userDto.Password, NormalizedUserName = userDto.FirstName + " " + userDto.LastName };
+                var data = new ApplicationUser {DisplayName=userDto.FirstName+" "+userDto.LastName, UserName = userDto.UserName, Email = userDto.UserEmails, PasswordHash = userDto.Password, NormalizedUserName = userDto.FirstName + " " + userDto.LastName,ContactInfo=userDto
+                .ContactInfo,Address=userDto.Address};
                 var res = await _userManager.CreateAsync(data, userDto.Password);
                 if (res.Succeeded)
                 {
@@ -107,6 +108,8 @@ namespace PRONEXEL_Business.Repositories
             userDto.UserEmails = user.NormalizedEmail;
             userDto.UserName = user.UserName;
             userDto.Userid = user.Id;
+            userDto.Address = user.Address;
+            userDto.ContactInfo = user.ContactInfo;
 
             // Fix: Await the Task returned by GetUserRolesAsync and retrieve the first role
             var roles = await GetUserRolesAsync(user.Id);
@@ -232,6 +235,8 @@ namespace PRONEXEL_Business.Repositories
                 // Update basic user properties
                 user.UserName = userDto.UserName;
                 user.Email = userDto.UserEmails;
+                user.Address=userDto.Address;
+                user.ContactInfo = userDto.ContactInfo;
                 user.NormalizedUserName = userDto.UserName.ToUpper();
 
                 // Update the user in the database
