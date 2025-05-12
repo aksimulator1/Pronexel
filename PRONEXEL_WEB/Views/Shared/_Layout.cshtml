@@ -73,7 +73,7 @@
                                       @*               <li><a href="html/user-profile-regular.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
                                                     <li><a href="html/user-profile-setting.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
                                                     <li><a href="html/user-profile-activity.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li> *@
-                                                    <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
+                                                   <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
                                                 </ul>
                                             </div>
                                             <div class="dropdown-inner">
@@ -278,127 +278,113 @@
     <!-- app-root e -->
     <!-- JavaScript -->
     <script>
-
-                var $body = $('body');
-
-        NioApp = {};
-
-        NioApp.ModeSwitch = function () {
-            var toggle = $('.dark-switch');
-
-            // Set active state on load
-            if ($body.hasClass('dark-mode')) {
-                toggle.addClass('active');
-            } else {
-                toggle.removeClass('active');
-            }
-
-            // Toggle mode on click
-            toggle.on('click', function (e) {
-                e.preventDefault();
-                $(this).toggleClass('active');
-                $body.toggleClass('dark-mode');
-            });
-        };
-
         $(document).ready(function () {
-            NioApp.ModeSwitch();
-        });
-
-
-        $(document).ready(function () {
-          $('#language-tree').jstree({
-            'core': {
-              'data': [
-                {
-                  "text": "<strong style='color:#f36c37;'>Language</strong>",
-                  "state": {
-                    "opened": false,
-                    "disabled": true
-                  },
-                  "icon": false,
-                  "children": [
-                    {
-                      "text": "<span style='color:#f36c37;'>English</span>",
-                   
-                    },
-                    { "text": "<span style='color:#f36c37;'>Arabic</span>" },
-                    { "text": "<span style='color:#f36c37;'>Portuguese</span>" },
-                    { "text": "<span style='color:#f36c37;'>Indonesian</span>" },
-                    { "text": "<span style='color:#f36c37;'>French</span>" },
-                    { "text": "<span style='color:#f36c37;'>Spanish</span>" }
-                  ]
+            // 1. Get dark mode setting from the database and apply it
+            $.ajax({
+                url: '/ThemeManagement/GetActiveColor',
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.trim().toLowerCase() === 'darkmood') {
+                        $('body').addClass('dark-mode');
+                        $('.dark-switch').addClass('active');
+                    } else {
+                        $('body').removeClass('dark-mode');
+                        $('.dark-switch').removeClass('active');
+                    }
+                },
+                error: function () {
+                    console.error('Failed to get theme setting.');
                 }
-              ],
-              'multiple': false  // Prevent default multi-selection
-            },
-            'plugins': ["checkbox", "wholerow"],
-            'checkbox': {
-              'keep_selected_style': false,
-              'three_state': false,
-              'tie_selection': true
-            }
-          });
+            });
 
-          // Enforce only one selection at a time
-          $('#language-tree').on("changed.jstree", function (e, data) {
-            if (data.selected.length > 1) {
-              var tree = $('#language-tree').jstree(true);
-              tree.deselect_all();
-              tree.select_node(data.node);
-            }
-          });
-        });
-        $(document).ready(function () {
+            // 2. Initialize language tree
+            $('#language-tree').jstree({
+                'core': {
+                    'data': [
+                        {
+                            "text": "<strong style='color:#f36c37;'>Language</strong>",
+                            "state": {
+                                "opened": false,
+                                "disabled": true
+                            },
+                            "icon": false,
+                            "children": [
+                                { "text": "<span style='color:#f36c37;'>English</span>" },
+                                { "text": "<span style='color:#f36c37;'>Arabic</span>" },
+                                { "text": "<span style='color:#f36c37;'>Portuguese</span>" },
+                                { "text": "<span style='color:#f36c37;'>Indonesian</span>" },
+                                { "text": "<span style='color:#f36c37;'>French</span>" },
+                                { "text": "<span style='color:#f36c37;'>Spanish</span>" }
+                            ]
+                        }
+                    ],
+                    'multiple': false
+                },
+                'plugins': ["checkbox", "wholerow"],
+                'checkbox': {
+                    'keep_selected_style': false,
+                    'three_state': false,
+                    'tie_selection': true
+                }
+            });
+
+            // Only allow one language selection
+            $('#language-tree').on("changed.jstree", function (e, data) {
+                if (data.selected.length > 1) {
+                    var tree = $('#language-tree').jstree(true);
+                    tree.deselect_all();
+                    tree.select_node(data.node);
+                }
+            });
+
+            // 3. Load and initialize category tree
             loadCategoryTree();
         });
 
-   function loadCategoryTree() {
-    $.ajax({
-        url: '/JsonSide/AllCategroy',
-        type: 'GET',
-        success: function (categories) {
-            const categoryPromises = categories.map(function (category) {
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        url: '/JsonSide/AllSubCategroy',
-                        type: 'GET',
-                        data: { categoryId: category.id },
-                        success: function (subcategories) {
-                            const children = subcategories.map(function (sub) {
-                                return {
-                                    text: sub.subTopicName
-                                };
-                            });
+        function loadCategoryTree() {
+            $.ajax({
+                url: '/JsonSide/AllCategroy',
+                type: 'GET',
+                success: function (categories) {
+                    const categoryPromises = categories.map(function (category) {
+                        return new Promise(function (resolve) {
+                            $.ajax({
+                                url: '/JsonSide/AllSubCategroy',
+                                type: 'GET',
+                                data: { categoryId: category.id },
+                                success: function (subcategories) {
+                                    const children = subcategories.map(function (sub) {
+                                        return { text: sub.subTopicName };
+                                    });
 
-                            resolve({
-                                text: category.topicName,
-                                children: children
+                                    resolve({
+                                        text: category.topicName,
+                                        children: children
+                                    });
+                                },
+                                error: function () {
+                                    console.error(`Error loading subcategories for category ${category.id}`);
+                                    resolve({
+                                        text: category.topicName,
+                                        children: []
+                                    });
+                                }
                             });
-                        },
-                        error: function () {
-                            console.error(`Error loading subcategories for category ${category.id}`);
-                            resolve({
-                                text: category.topicName,
-                                children: []
-                            });
-                        }
+                        });
                     });
-                });
-            });
 
-            Promise.all(categoryPromises).then(function (orderedTreeData) {
-                initializeJsTree(orderedTreeData);
+                    Promise.all(categoryPromises).then(function (orderedTreeData) {
+                        initializeJsTree(orderedTreeData);
+                    });
+                },
+                error: function () {
+                    console.error('Failed to load categories');
+                }
             });
-        },
-        error: function () {
-            console.error('Failed to load categories');
         }
-    });
-}
 
-
-                function initializeJsTree(treeData) {
+        function initializeJsTree(treeData) {
             $('#category-tree').jstree({
                 'core': {
                     'data': treeData,
@@ -415,16 +401,12 @@
                     const selectedLangId = $('#language-tree').jstree('get_selected')[0];
                     const langNode = $('#language-tree').jstree(true).get_node(selectedLangId);
                     const selectedLanguage = langNode ? $(langNode.text).text() : "None";
+
                     var url = '/TrainingModule/AllMedia?SubcatName=' + encodeURIComponent(selectedSubcategory) + '&Language=' + encodeURIComponent(selectedLanguage);
                     $("#DivContainerForCustForm").load(url);
-
- 
                 }
             });
         }
-     
-
-
     </script>
 
 

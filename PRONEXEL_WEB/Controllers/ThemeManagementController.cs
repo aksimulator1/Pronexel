@@ -21,5 +21,18 @@ namespace PRONEXEL_WEB.Controllers
             ViewBag.res=res;
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> DarkMood(string Color)
+        {
+            var res = await _themeRepo.UpdateThemeColor(Color);
+            ViewBag.res=res;
+            return View();
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetActiveColor()
+        {
+            var res = await _themeRepo.GetActiveColor();
+            return Json(res);
+        }
     }
 }
