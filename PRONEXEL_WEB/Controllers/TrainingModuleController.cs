@@ -53,9 +53,6 @@ namespace PRONEXEL_WEB.Controllers
             return View(filteredMedia);
 
         }
-        public IActionResult UserQuiz()
-        {
-            return View();
-        }
+       
     }
 }

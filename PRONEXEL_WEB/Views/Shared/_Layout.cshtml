@@ -3,7 +3,30 @@
 
 <head>
   
+    <style>
+        /* Default jsTree node text in dark mode */
+        body.dark-mode .jstree-anchor {
+            color: #ffffff !important;
+        }
 
+            /* On hover, change text color to black */
+            body.dark-mode .jstree-anchor:hover {
+                color: #000000 !important;
+                background-color: #e0e0e0 !important; /* Optional: subtle background to highlight */
+            }
+             body.dark-mode .jstree-ocl:hover {
+                color: #000000 !important;
+                background-color: #e0e0e0 !important; /* Optional: subtle background to highlight */
+            }
+
+        /* Optional: style for selected item */
+        body.dark-mode .jstree-clicked {
+            background-color: #444 !important;
+            color: #ffffff !important;
+        }
+
+
+    </style>
     <base href="../">
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
@@ -73,7 +96,7 @@
                                       @*               <li><a href="html/user-profile-regular.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
                                                     <li><a href="html/user-profile-setting.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
                                                     <li><a href="html/user-profile-activity.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li> *@
-                                                   <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
+                                                   <li style="display:none;"><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
                                                 </ul>
                                             </div>
                                             <div class="dropdown-inner">
@@ -228,19 +251,26 @@
 
                                 <!-- .nk-menu-item -->
                             }
-                            else if(User.IsInRole("ApplicationUsersss"))
+                            else if(User.IsInRole("ApplicationUser"))
                             {
                                <li class="nk-menu-item has-sub">
                                     <a href="#" class="nk-menu-link nk-menu-toggle">
                                         <span class="nk-menu-icon"><em class="icon ni ni-book-read"></em></span>
-                                        <span class="nk-menu-text">Courses</span>
+                                        <span class="nk-menu-text">Manage Quiz</span>
                                     </a>
                                     <ul class="nk-menu-sub">
                                       
                                         <li class="nk-menu-item">
+                                            <a href="QuizManagement/NewQuiz" class="nk-menu-link">
+                                                <span class="nk-menu-icon"><em class="icon ni ni-view-list"></em></span>
+                                                <span class="nk-menu-text">New Quiz</span>
+                                            </a>
+
+                                        </li>
+                                        <li class="nk-menu-item">
                                             <a href="TrainingModule/Index" class="nk-menu-link">
                                                 <span class="nk-menu-icon"><em class="icon ni ni-view-list"></em></span>
-                                                <span class="nk-menu-text">All Courses</span>
+                                                <span class="nk-menu-text">Existing Result</span>
                                             </a>
 
                                         </li>
@@ -303,19 +333,19 @@
                 'core': {
                     'data': [
                         {
-                            "text": "<strong style='color:#f36c37;'>Language</strong>",
+                            "text": "<strong>Language</strong>",
                             "state": {
                                 "opened": false,
                                 "disabled": true
                             },
                             "icon": false,
                             "children": [
-                                { "text": "<span style='color:#f36c37;'>English</span>" },
-                                { "text": "<span style='color:#f36c37;'>Arabic</span>" },
-                                { "text": "<span style='color:#f36c37;'>Portuguese</span>" },
-                                { "text": "<span style='color:#f36c37;'>Indonesian</span>" },
-                                { "text": "<span style='color:#f36c37;'>French</span>" },
-                                { "text": "<span style='color:#f36c37;'>Spanish</span>" }
+                                { "text": "<span>English</span>" },
+                                { "text": "<span>Arabic</span>" },
+                                { "text": "<span>Portuguese</span>" },
+                                { "text": "<span>Indonesian</span>" },
+                                { "text": "<span>French</span>" },
+                                { "text": "<span>Spanish</span>" }
                             ]
                         }
                     ],

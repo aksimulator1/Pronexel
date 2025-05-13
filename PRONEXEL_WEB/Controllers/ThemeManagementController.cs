@@ -28,6 +28,7 @@ namespace PRONEXEL_WEB.Controllers
             ViewBag.res=res;
             return View();
         }
+        [AllowAnonymous]
         [HttpGet]
         public async Task<JsonResult> GetActiveColor()
         {

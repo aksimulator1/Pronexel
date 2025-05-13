@@ -1,0 +1,98 @@
+﻿@model IEnumerable<PRONEXEL_Data.Models.Dto.QuestionViewModel>
+
+@{
+    ViewData["Title"] = "Take Quiz";
+}
+<div class="nk-block nk-block-lg">
+    <div class="card card-bordered">
+        <div class="card-inner">
+            <form method="post" asp-action="SubmitAnswer" asp-controller="Quiz">
+                @for (int q = 0; q < Model.Count(); q++)
+                {
+                    var item = Model.ElementAt(q);
+                    <input type="hidden" name="Questions[@q].QuestionId" value="@item.Quiz.ID" />
+                    <div class="nk-block nk-block-lg" style="background-color:#838787; margin-top:10px">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card-header text-white" style="background-color:#e7932f">
+                                    <h5>Q# @(q + 1) @item.Quiz.Title</h5>
+                                    @if (!string.IsNullOrEmpty(item.Quiz.QuestionMedia))
+                                    {
+                                        <img src="@Url.Content(item.Quiz.QuestionMedia)" class="img-fluid mb-2" alt="Question Image" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:10px">
+                            @for (int i = 0; i < item.Answers.Count; i++)
+                            {
+                                var answer = item.Answers[i];
+                                string radioId = $"question_{q}_answer_{i}";
+                                <div class="col-md-6 col-6">
+                                    <div class="preview-block" style="margin-left:10px">
+                                        <div class="custom-control custom-radio image-control">
+                                            <input type="radio"
+                                                   class="custom-control-input"
+                                                   id="@radioId"
+                                                   name="Questions[@q].SelectedAnswerId"
+                                                   value="@answer.AnswerID" />
+                                            <label class="custom-control-label" for="@radioId">
+                                                @if (!string.IsNullOrEmpty(answer.AnswerMedia))
+                                                {
+                                                    <img style="width:320px;height:170px;" src="@Url.Content(answer.AnswerMedia)" />
+                                                }
+                                            </label>
+                                        </div>
+                                        <h4 style="margin-top:8px;" class="preview-title overline-title">@answer.AnswerText</h4>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                <button type="submit" class="btn btn-primary mt-3" id="submitQuizBtn">Submit</button>
+
+</form>
+        </div>
+    </div>
+</div>
+    <script>
+        $(document).ready(function () {
+            $('#submitQuizBtn').on('click', function (e) {
+                e.preventDefault(); // prevent default form submission
+
+                let isValid = true;
+                const results = [];
+
+                $('input[type=hidden][name^="Questions"]').each(function () {
+                    const questionId = $(this).val();
+                    const name = $(this).attr('name'); // e.g., Questions[0].QuestionId
+                    const indexMatch = name.match(/Questions\[(\d+)\]/);
+                    if (indexMatch) {
+                        const qIndex = indexMatch[1];
+                        const selectedAnswer = $(`input[name="Questions[${qIndex}].SelectedAnswerId"]:checked`).val();
+
+                        if (!selectedAnswer) {
+                            isValid = false;
+                            alert(`Please select an answer for Question #${parseInt(qIndex) + 1}`);
+                            return false; // breaks the each loop
+                        }
+
+                        results.push({
+                            questionId: questionId,
+                            selectedAnswerId: selectedAnswer
+                        });
+                    }
+                });
+
+                if (isValid) {
+                    console.log("Submitted Answers:");
+                    console.log(results);
+                    // You can uncomment this to actually submit:
+                    // $('form').submit();
+                }
+            });
+        });
+    </script>
+
+
