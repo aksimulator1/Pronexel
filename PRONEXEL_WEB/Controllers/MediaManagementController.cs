@@ -17,6 +17,7 @@ namespace PRONEXEL_WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> AddMedia()
         {
+            ViewBag.Topics = await contentRepo.GetTopic();
             ViewBag.AllsubTopics = await contentRepo.GetSubTopics();
             return View();
         }
@@ -62,7 +63,7 @@ namespace PRONEXEL_WEB.Controllers
             media.SubTopicID = ID;
             media.MediaType = MediaType;
             var res = await mediaRepo.AddMediaIntoDbAsync(media);
-
+            ViewBag.Topics = await contentRepo.GetTopic();
             ViewBag.AllsubTopics = await contentRepo.GetSubTopics();
             return View();
         }

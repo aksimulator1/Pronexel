@@ -10,6 +10,7 @@ namespace PRONEXEL_Data.Models.Dto
     {
         public string MediaID { get; set; }
         public string SubTopicID { get; set; }
+        public string SubTopicName { get; set; }
         public string MediaType { get; set; }
         public string MediaURL { get; set; }
         public string Title { get; set; }

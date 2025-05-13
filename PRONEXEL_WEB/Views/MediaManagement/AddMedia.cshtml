@@ -15,19 +15,38 @@
             <form id="mediaForm" asp-action="AddMedia" asp-controller="MediaManagement" method="post" enctype="multipart/form-data">
                 <div class="row g-4">
                     <!-- Sub Topics -->
+                    <!-- Topic Category Dropdown -->
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label" for="user-role">Sub Topics</label>
+                            <label class="form-label" for="topic-category">Topic Category</label>
                             <div class="form-control-wrap">
-                                <select name="ID" class="form-control" id="user-role" required>
-                                    @for (int i = 0; i < ViewBag.AllsubTopics.Count; i++)
+                                <select name="TopicID" class="form-control" id="topic-category" required>
+                                    <option value="">Select Category</option>
+                                    @foreach (var topic in ViewBag.Topics)
                                     {
-                                        <option value="@ViewBag.AllsubTopics[i].SubTopicID">@ViewBag.AllsubTopics[i].SubTopicName</option>
+                                        <option value="@topic.TopicName">@topic.TopicName</option>
                                     }
                                 </select>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Sub Topics Dropdown -->
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-label" for="user-role">Sub Topics</label>
+                            <div class="form-control-wrap">
+                                <select name="ID" class="form-control" id="user-role" required>
+                                    <option value="">Select Sub Topic</option>
+                                    @foreach (var sub in ViewBag.AllsubTopics)
+                                    {
+                                        <option value="@sub.SubTopicID" data-topicid="@sub.TopicName">@sub.SubTopicName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <!-- Media Type -->
                     <div class="col-lg-6">
@@ -78,6 +97,24 @@
 
 <script>
     $(document).ready(function () {
+            $('#topic-category').change(function () {
+        var selectedTopicId = $(this).val();
+
+        // Reset and hide all subtopics
+        $('#user-role option').hide();
+
+        // Show only matching subtopics
+        $('#user-role option').each(function () {
+            var topicId = $(this).data('topicid');
+            if (!topicId || topicId === selectedTopicId) {
+                $(this).show();
+            }
+        });
+
+        // Reset subtopic selection
+        $('#user-role').val('');
+    });
+
         // Show media upload section and set accepted file types
         $('#media-type').change(function () {
             var selectedType = $(this).val();

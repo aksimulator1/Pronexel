@@ -16,9 +16,10 @@
                             {
                                 if (item.MediaType == "Video")
                                 {
-                                    <video style="width:100%" autoplay loop playsinline>
+                                    <video style="width:95%" controls controlsList="nodownload" oncontextmenu="return false;">
                                         <source src="@item.MediaURL" type="video/mp4" />
                                     </video>
+
 
                                 }
                                 else if (item.MediaType == "Images")
@@ -48,8 +49,8 @@
                             <div class="user-card">
                                 <div class="user-avatar"></div>
                                 <div class="user-info">
-                                    <span class="lead-text">@item.SubTopicID</span><br />
-                                    <span class="sub-text">@item.Title</span>
+                                    <span class="lead-text">@item.SubTopicName</span><br />
+                              @*       <span class="sub-text">@item.Title</span> *@
                                 </div>
                             </div>
                             <div>
