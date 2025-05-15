@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PRONEXEL_Business.Repositories;
 using PRONEXEL_WEB.Models;
 
 namespace PRONEXEL_WEB.Controllers;
@@ -9,15 +10,25 @@ namespace PRONEXEL_WEB.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ContentRepo contentRepo;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ContentRepo contentRepo)
     {
         _logger = logger;
+        this.contentRepo = contentRepo;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
+    {
+        ViewBag.topic = await contentRepo.GetTopic();
+        ViewBag.subtopic = await contentRepo.GetSubTopics();
+        return View();
+      
+    }
+    public async Task<IActionResult> AdminIndex()
     {
         return View();
+
     }
 
     public IActionResult Privacy()

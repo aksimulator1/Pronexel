@@ -6,17 +6,23 @@
 <div class="container-fluid">
 
     <div class="nk-block">
-        <div class="row g-gs">
+        <div class="row g-gs" >
             @foreach (var item in Model)
             {
-                <div class="col-sm-12 col-xxl-3">
+
+                <div class="col-md-12" >
                     <div class="gallery card card-bordered">
+                        <h3 style="margin-top:20px;padding:10px; background-color:#101924;color:white;"> <em class="icon ni ni-forward-alt-fill"></em>&nbsp;&nbsp;@ViewBag.Topic.TopicName </h3>
+                        <h5 style="padding:10px;">
+                            @ViewBag.Topic.TopicDescription
+                        </h5>
                         <div class="gallery-image">
+                           
                             @if (!string.IsNullOrEmpty(item.MediaURL))
                             {
                                 if (item.MediaType == "Video")
                                 {
-                                    <video style="width:95%" controls controlsList="nodownload" oncontextmenu="return false;">
+                                    <video style="width:100%" controls controlsList="nodownload" oncontextmenu="return false;">
                                         <source src="@item.MediaURL" type="video/mp4" />
                                     </video>
 
@@ -44,21 +50,17 @@
                                 <img class="w-100 rounded-top" src="/images/stock/a.jpg" alt="No media available" />
                             }
                         </div>
+                        <h6 style="padding:20px">
+                            @ViewBag.SubTopic.Description
 
-                        <div class="gallery-body card-inner align-center justify-between flex-wrap g-2">
-                            <div class="user-card">
-                                <div class="user-avatar"></div>
-                                <div class="user-info">
-                                    <span class="lead-text">@item.SubTopicName</span><br />
-                              @*       <span class="sub-text">@item.Title</span> *@
-                                </div>
-                            </div>
-                            <div>
-                                <!-- Optional controls like download or delete -->
-                            </div>
-                        </div>
+                        </h6>
                     </div>
                 </div>
+                <div class="col-md-12" style="background-color:#101924; padding: 20px; text-align: center;">
+                    <button class="btn btn-lg btn-light" style="margin-right: 10px;">Quiz Section</button>
+                    <button class="btn btn-lg btn-dark">Next Topic</button>
+                </div>
+
             }
         </div>
     </div><!-- .nk-block -->

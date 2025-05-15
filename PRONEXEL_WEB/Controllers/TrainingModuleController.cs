@@ -26,24 +26,11 @@ namespace PRONEXEL_WEB.Controllers
         [HttpGet]
         public async Task<IActionResult> AllMedia(string TopicID, string SubTopicID,string Language="Eng")
         {
-            var catIDList = await contentRepo.GetSubTopics();
 
-            if (catIDList == null || !catIDList.Any())
-            {
-                // Handle the case where no subtopics are returned
-                return View(new List<Media>()); // Or return an appropriate message/view
-            }
-
-            var selectedSubTopic = catIDList.FirstOrDefault(x => x.SubTopicName == SubcatName);
-
-            if (selectedSubTopic == null || string.IsNullOrEmpty(selectedSubTopic.SubTopicID))
-            {
-                // Handle the case where the subtopic was not found
-                return View(new List<Media>());
-            }
-
-            string catid = selectedSubTopic.SubTopicID;
-
+            var Topic = await contentRepo.GetTopic();
+            ViewBag.Topic = Topic.Where(x => x.ID == TopicID).FirstOrDefault();
+            var SubTopic = await contentRepo.GetSubTopics();
+            ViewBag.SubTopic = SubTopic.Where(x => x.SubTopicID == SubTopicID).FirstOrDefault();
             var res = await mediaRepo.AllMedia();
 
             if (res == null || !res.Any())
@@ -52,7 +39,7 @@ namespace PRONEXEL_WEB.Controllers
                 return View(new List<Media>());
             }
 
-            var filteredMedia = res.Where(x => x.SubTopicID == catid).ToList();
+            var filteredMedia = res.Where(x => x.SubTopicID == SubTopicID).ToList();
 
             return View(filteredMedia);
 

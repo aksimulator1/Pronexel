@@ -25,7 +25,7 @@ namespace PRONEXEL_WEB.Controllers
             var data = await _contentRepo.GetSubTopics();
             if(data!=null)
             {
-                data=data.Where(x=>x.TopicName== cid.TopicName).ToList();
+                data=data.Where(x=>x.TopicName== cid.TopicName).OrderBy(x=>x.CreatedOn).ToList();
             }
             return Json(data);
         }

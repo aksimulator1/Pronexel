@@ -30,8 +30,13 @@ namespace PRONEXEL_WEB.Controllers
                 ViewBag.res = "Incorrect UserName or Password";
                 return View();
             }
-
-            return RedirectToAction("Index","Home");
+            var ActiveUserID = await _userRepo.ActiveUserId();
+            var Userrole = await _userRepo.GetUserRolesAsync(ActiveUserID);
+            if(Userrole.FirstOrDefault().ToLower()== "applicationuser")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("AdminIndex","Home");
         }
         [AllowAnonymous]
         public async Task<IActionResult> CreateRoles()
