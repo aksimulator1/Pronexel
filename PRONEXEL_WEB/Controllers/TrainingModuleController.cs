@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using PRONEXEL_Business.Repositories;
 using PRONEXEL_Data.Models.Dto;
+using System.Threading.Tasks;
 
 namespace PRONEXEL_WEB.Controllers
 {
-    [Authorize(Roles ="ApplicationUser,SuperAdmin,Admin")]
+    // [Authorize(Roles ="ApplicationUser,SuperAdmin,Admin")]
+    [AllowAnonymous]
     public class TrainingModuleController : Controller
     {
         private readonly MediaRepo mediaRepo;
@@ -15,12 +17,14 @@ namespace PRONEXEL_WEB.Controllers
             this.mediaRepo = mediaRepo;
             this.contentRepo = contentRepo;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.topic = await contentRepo.GetTopic();
+            ViewBag.subtopic = await contentRepo.GetSubTopics();
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> AllMedia(string SubcatName,string Language)
+        public async Task<IActionResult> AllMedia(string TopicID, string SubTopicID,string Language="Eng")
         {
             var catIDList = await contentRepo.GetSubTopics();
 

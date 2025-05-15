@@ -32,6 +32,7 @@
     <Folder Include="wwwroot\Media\Answer\" />
     <Folder Include="wwwroot\Media\Quiz\" />
     <Folder Include="wwwroot\Media\Video\" />
+    <Folder Include="wwwroot\NewTheme\" />
   </ItemGroup>
 
 </Project>
