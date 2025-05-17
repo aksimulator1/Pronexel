@@ -45,8 +45,11 @@
                             <label class="form-label" for="first-name">Type</label>
                             <div class="form-control-wrap">
                                 <select type="text" name="CategoryType" class="form-control" required>
-                                <option>Basic</option> 
-                                <option>Advance</option>    
+                                    @for (int i = 0; i < ViewBag.Chapter.Count; i++)
+                                    {
+                                        <option value="@ViewBag.Chapter[i]">@ViewBag.Chapter[i]</option>
+                                    }
+                                 
                                 </select>
                             </div>
                         </div>

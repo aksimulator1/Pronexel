@@ -6,7 +6,6 @@
 <html lang="zxx" class="js">
 
 <head>
-
     <style>
         .nk-menu-link.selected {
             background-color: white !important;
@@ -19,22 +18,18 @@
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
-    <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="./images/favicon.png">
-    <!-- Page Title  -->
-    <title>Blank - Layout | DashLite Admin Template</title>
-    <!-- StyleSheets  -->
+    <title>Login | Pronexel</title>
+
+    <!-- CSS Files -->
     <link rel="stylesheet" href="~/newtheme/assets/css/dashlite.css?ver=2.5.0">
     <link id="skin-default" rel="stylesheet" href="~/newtheme/assets/css/theme.css?ver=2.5.0">
 </head>
 
-<body class="nk-body bg-lighter npc-general has-sidebar ">
+<body class="nk-body bg-lighter npc-general has-sidebar">
     <div class="nk-app-root">
-        <!-- main s -->
-        <div class="nk-main ">
-            <!-- sidebar s -->
-            <div class="nk-sidebar nk-sidebar-fixed is-dark " data-content="sidebarMenu">
+        <div class="nk-main">
+            <!-- Sidebar -->
+            <div class="nk-sidebar nk-sidebar-fixed is-dark" data-content="sidebarMenu">
                 <div class="nk-sidebar-element nk-sidebar-head" style="background-color:white;">
                     <div class="nk-menu-trigger">
                         <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu"><em class="icon ni ni-arrow-left"></em></a>
@@ -42,46 +37,51 @@
                     </div>
                     <div class="nk-sidebar-brand">
                         <a href="html/index.html" class="logo-link nk-sidebar-logo">
-                            <img class="logo-light" style="width:15%" src="~/media/webimages/pronexel.png" srcset="~/media/webimages/pronexel.png 2x" alt="logo">
-                            <img class="logo-dark" style="width:15%" src="~/media/webimages/pronexel.png" srcset="~/media/webimages/pronexel.png 2x" alt="logo-dark">
+                            <img class="logo-light" style="width:15%" src="~/media/webimages/pronexel.png" alt="logo">
+                            <img class="logo-dark" style="width:15%" src="~/media/webimages/pronexel.png" alt="logo-dark">
                         </a>
                     </div>
-                </div><!-- .nk-sidebar-element -->
+                </div>
+
                 <div class="nk-sidebar-element nk-sidebar-body">
                     <div class="nk-sidebar-content">
                         <div class="nk-sidebar-menu" data-simplebar>
                             <ul class="nk-menu">
                                 <li class="nk-menu-heading">
                                     <h6 class="overline-title text-primary-alt">Topics</h6>
-                                </li><!-- .nk-menu-item -->
-                                @foreach (var item in ViewBag.topic)
+                                </li>
+
+                                @foreach (var chapter in ViewBag.ChapterType)
                                 {
-                                    <li class="nk-menu-item">
-                                        <a class="nk-menu-link topic-link" data-id="@item.ID" onclick="loadSubtopics(this, '@item.ID', true)">
-                                            <span class="nk-menu-text">@item.TopicName</span>
+                                    <li class="nk-menu-item has-sub">
+                                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                                            <span class="nk-menu-text">@chapter</span>
                                         </a>
-
-
+                                        <ul class="nk-menu-sub">
+                                            @foreach (var topic in ViewBag.Topic)
+                                            {
+                                                if (topic.CategoryType == chapter)
+                                                {
+                                                    <li class="nk-menu-item has-sub">
+                                                        <a href="#" class="nk-menu-link nk-menu-toggle topic-link" data-id="@topic.ID" onclick="loadSubtopics(this, '@topic.ID')">
+                                                            <span class="nk-menu-text">@topic.TopicName</span>
+                                                        </a>
+                                                        <ul class="nk-menu-sub" id="subtopics-container-@topic.ID"></ul>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
                                     </li>
                                 }
-
-
-                                <li class="nk-menu-heading" style="display:none;" id="subtopicslabel">
-                                    <h6 class="overline-title text-primary-alt">Sub Topics</h6>
-                                </li><!-- .nk-menu-heading -->
-                                <ul id="subtopics-container" class="nk-menu"></ul>
-
-
-
-                            </ul><!-- .nk-menu -->
-                        </div><!-- .nk-sidebar-menu -->
-                    </div><!-- .nk-sidebar-content -->
-                </div><!-- .nk-sidebar-element -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- sidebar  -->
-            <!-- wrap s -->
-            <div class="nk-wrap ">
-                <!-- main header s -->
+            <!-- /Sidebar -->
+            <!-- Wrap -->
+            <div class="nk-wrap">
+                <!-- Header -->
                 <div class="nk-header nk-header-fixed is-light">
                     <div class="container-fluid">
                         <div class="nk-header-wrap">
@@ -90,99 +90,71 @@
                             </div>
                             <div class="nk-header-brand d-xl-none">
                                 <a href="html/index.html" class="logo-link">
-
-                                    <img class="logo-light logo-img" src="~/media/webimages/pronexel.png" srcset="~/media/webimages/pronexel.png 2x" alt="logo">
-                                    <img class="logo-dark logo-img" src="~/media/webimages/pronexel.png" srcset="~/media/webimages/pronexel.png 2x" alt="logo-dark">
+                                    <img class="logo-light logo-img" src="~/media/webimages/pronexel.png" alt="logo">
+                                    <img class="logo-dark logo-img" src="~/media/webimages/pronexel.png" alt="logo-dark">
                                 </a>
-                            </div><!-- .nk-header-brand -->
-                            <div class="nk-header-news d-none d-xl-block">
-                                <div class="nk-news-list">
-                                    <a class="nk-news-item" href="#">
-
-
-                                    </a>
-                                </div>
-                            </div><!-- .nk-header-news -->
+                            </div>
                             <div class="nk-header-tools">
                                 <ul class="nk-quick-nav">
                                     <li class="dropdown user-dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <div class="user-toggle">
-                                                <div class="user-avatar sm">
-                                                    <em class="icon ni ni-user-alt"></em>
-                                                </div>
-                                          @*       <div class="user-info d-none d-md-block">
-                                                    <div class="user-status">Administrator</div>
-                                                    <div class="user-name dropdown-indicator">Abu Bin Ishityak</div>
-                                                </div> *@
+                                                <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
                                             </div>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1">
                                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                                 <div class="user-card">
-                                                    <div class="user-avatar">
-                                                        <span>AB</span>
-                                                    </div>
+                                                    <div class="user-avatar"><span>AB</span></div>
                                                     <div class="user-info">
                                                         <span class="lead-text">Abu Bin Ishtiyak</span>
                                                         <span class="sub-text">info@softnio.com</span>
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="dropdown-inner">
                                                 <ul class="link-list">
                                                     <li><a asp-action="Logout" asp-controller="Account"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
                                                 </ul>
                                             </div>
                                         </div>
-                                    </li><!-- .dropdown -->
-
-                                </ul><!-- .nk-quick-nav -->
-                            </div><!-- .nk-header-tools -->
-                        </div><!-- .nk-header-wrap -->
-                    </div><!-- .container-fliud -->
-                </div>
-                <!-- main header e -->
-                <!-- contents -->
-                <div style="position: relative; width: 100%; height: auto;margin-top:50px; " id="NewContent">
-                    <!-- Background Video -->
-                    <div style="opacity:30%">
-                    <video autoplay muted loop playsinline style="width:100%; height:auto;  object-fit:cover; position:absolute; top:0; left:0; z-index: 1;">
-                        <source src="~/media/b45b93e4-b12d-48eb-9128-957c5b9168f9.mp4" type="video/mp4" />
-                    </video>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Foreground Image -->
+                </div>
+                <!-- /Header -->
+                <!-- Main Content Area -->
+                <div id="NewContent" style="position: relative; width: 100%; height: auto;margin-top:50px;">
+                    <div style="opacity:30%">
+                        <video autoplay muted loop playsinline style="width:100%; height:auto; object-fit:cover; position:absolute; top:0; left:0; z-index: 1;">
+                            <source src="~/media/b45b93e4-b12d-48eb-9128-957c5b9168f9.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+
                     <img src="~/media/webimages/pronexel.png" style="position: relative; z-index: 2; width: 36%;margin-left:33%;margin-top:10%" />
                     <h5 style="padding:20px;color:#101924;">
-                        Pronexel offers expert technical consultancy and tailored solutions for oil & gas operators. We connect clients with specialized services to optimize operations, enhance efficiency, and ensure regulatory compliance. Our approach focuses on innovation, reliability, and strategic alignment with industry demands.
+                        Pronexel offers expert technical consultancy and tailored solutions for oil & gas operators...
                     </h5>
-                    <a href="~/TrainingModule/Index" class="btn btn-lg" style="color:white;width:18%; margin-left:40%; opacity:100%; background-color:#101924;">
+
+                    <a href="~/TrainingModule/Index" class="btn btn-lg" style="color:white;width:18%; margin-left:40%; background-color:#101924;">
                         Goto Course <em class="icon ni ni-arrow-right ml-1"></em>
                     </a>
-
-
-
                 </div>
-
-                
-                <!-- content  -->
-                <!-- footer s -->
-            
-                <!-- footer e -->
+                <!-- /Main Content Area -->
             </div>
-            <!-- wrap e -->
+            <!-- /Wrap -->
         </div>
-        <!-- main  -->
     </div>
-    <!-- app-root e -->
+
     <!-- JavaScript -->
     <script src="~/newtheme/assets/js/bundle.js?ver=2.5.0"></script>
     <script src="~/newtheme/assets/js/scripts.js?ver=2.5.0"></script>
     <script>
-        function loadSubtopics(element, topicId, autoSelectFirst = false) {
+        function loadSubtopics(element, topicId) {
             // Highlight selected topic
-            document.querySelectorAll('.nk-menu-link.topic-link').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.nk-menu-link.topic-link').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
 
             $.ajax({
@@ -190,8 +162,8 @@
                 type: 'GET',
                 data: { categoryId: topicId },
                 success: function (subtopics) {
-                    const container = document.getElementById('subtopics-container');
-                    container.innerHTML = ''; // Clear old subtopics
+                    const container = document.getElementById(`subtopics-container-${topicId}`);
+                    container.innerHTML = '';
 
                     subtopics.forEach((sub, index) => {
                         const li = document.createElement('li');
@@ -203,40 +175,25 @@
                         a.onclick = function () {
                             onSubtopicClick(this, topicId, sub.subTopicID);
                         };
-                        $('#subtopicslabel').show();
-                        // Auto-select first subtopic if needed
-                        if (autoSelectFirst && index === 0) {
-                            setTimeout(() => a.click(), 0); // Trigger click after DOM update
-                        }
 
                         li.appendChild(a);
                         container.appendChild(li);
                     });
                 },
                 error: function () {
-                    console.error(`Error loading subtopics for category ${topicId}`);
+                    console.error(`Failed to load subtopics for topic ${topicId}`);
                 }
             });
         }
 
         function onSubtopicClick(element, topicId, subTopicId) {
             // Highlight selected subtopic
-            document.querySelectorAll('#subtopics-container .nk-menu-link').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.nk-menu-link.subtopic-link').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
 
-            var url = '/TrainingModule/AllMedia?TopicID=' + encodeURIComponent(topicId) + '&SubTopicID=' + encodeURIComponent(subTopicId);
+            const url = `/TrainingModule/AllMedia?TopicID=${encodeURIComponent(topicId)}&SubTopicID=${encodeURIComponent(subTopicId)}`;
             $("#NewContent").load(url);
-
-            console.log("Selected Topic ID:", topicId);
-            console.log("Selected SubTopic ID:", subTopicId);
         }
-
-        // 🚫 Removed the auto-select on page load
     </script>
-
-
-
-
 </body>
-
 </html>

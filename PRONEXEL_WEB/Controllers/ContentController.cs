@@ -18,13 +18,15 @@ namespace PRONEXEL_WEB.Controllers
             this.mediaRepo = mediaRepo;
         }
         [HttpGet]
-        public IActionResult AddCategory()
+        public async Task<IActionResult> AddCategory()
         {
+            ViewBag.Chapter = await _contentRepo.AllChapter();
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> AddCategory(string TopicName,string TopicDescription, string CategoryType)
         {
+            ViewBag.Chapter = await _contentRepo.AllChapter();
             var res= await _contentRepo.AddTopic(TopicName, TopicDescription, CategoryType);
             return View();
         }

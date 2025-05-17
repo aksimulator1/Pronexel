@@ -22,6 +22,7 @@ public class HomeController : Controller
     {
         ViewBag.topic = await contentRepo.GetTopic();
         ViewBag.subtopic = await contentRepo.GetSubTopics();
+        ViewBag.ChapterType = await contentRepo.AllChapter();
         return View();
       
     }

@@ -187,6 +187,19 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
+        public async Task<List<string>> AllChapter()
+        {
+            try
+            {
+               
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("GetAllChapterType");
+                return res.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<List<QuizAnswer>> AllAnswers()
         {
