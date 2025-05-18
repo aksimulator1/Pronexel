@@ -4,29 +4,26 @@
     Layout = null;
 }
 <div class="container-fluid">
-
     <div class="nk-block">
-        <div class="row g-gs" >
+        <div class="row g-gs">
             @foreach (var item in Model)
             {
-
-                <div class="col-md-12" >
+                <div class="col-md-12">
                     <div class="gallery card card-bordered">
-                        <h3 style="margin-top:20px;padding:10px; background-color:#101924;color:white;"> <em class="icon ni ni-forward-alt-fill"></em>&nbsp;&nbsp;@ViewBag.Topic.TopicName </h3>
+                        <h3 style="margin-top:20px;padding:10px; background-color:#101924;color:white;">
+                            <em class="icon ni ni-forward-alt-fill"></em>&nbsp;&nbsp;@ViewBag.Topic.TopicName
+                        </h3>
                         <h5 style="padding:10px;">
                             @ViewBag.Topic.TopicDescription
                         </h5>
                         <div class="gallery-image">
-                           
                             @if (!string.IsNullOrEmpty(item.MediaURL))
                             {
                                 if (item.MediaType == "Video")
                                 {
-                                    <video style="width:100%" controls controlsList="nodownload" oncontextmenu="return false;">
+                                    <video id="trainingVideo_@item.MediaID" class="trainingVideo" data-media-id="@item.MediaID" style="width:100%" controls controlsList="nodownload" oncontextmenu="return false;">
                                         <source src="@item.MediaURL" type="video/mp4" />
                                     </video>
-
-
                                 }
                                 else if (item.MediaType == "Images")
                                 {
@@ -52,16 +49,188 @@
                         </div>
                         <h6 style="padding:20px">
                             @ViewBag.SubTopic.Description
-
                         </h6>
                     </div>
                 </div>
                 <div class="col-md-12" style="background-color:#101924; padding: 20px; text-align: center;">
-                    <button class="btn btn-lg btn-light" style="margin-right: 10px;">Quiz Section</button>
+                    <button id="startQuizBtn" class="btn btn-lg btn-light" style="margin-right: 10px;">
+                        Quiz Section
+                    </button>
                     <button class="btn btn-lg btn-dark">Next Topic</button>
                 </div>
-
             }
         </div>
-    </div><!-- .nk-block -->
+    </div>
 </div>
+
+<!-- Quiz Modal -->
+<div id="quizModalOverlay" style="display: none; position: fixed; inset: 0; background-color: rgba(0,0,0,0.8); z-index: 9999;">
+    <div id="quizModalContent" style="width: 80%; height: 80%;border:solid;border-color:white; background-color: #000; margin: 5% auto; display: flex; color: white; font-family: Arial, sans-serif; position: relative;">
+        <button id="closeModalX" style="position: absolute; top: 10px; right: 10px; background: transparent; border: none; font-size: 24px; color: white; cursor: pointer;">&times;</button>
+        <div style="width: 250px; background-color: #101924; padding: 20px;">
+            <h2 style="text-align:center;color:white;">Quiz</h2>
+            <div style="margin: 20px 0; background-color: #999; padding: 10px; color: black; font-weight: bold; text-align: center;">
+                Question<br><span id="startQuestion">0</span> of <span id="TotalQuestion">00</span>
+            </div>
+            <button id="prevBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Previous</button>
+            <button id="nextBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Next</button>
+            <button id="checkAnswersBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Check Answers</button>
+            <button class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Review Material</button>
+        </div>
+        <div style="flex: 1; padding: 40px; text-align: center;">
+            <h3 id="QuestionTitle" style="color:white"></h3>
+            <div style="margin: 20px auto;">
+                <img id="QuestionMedia" src="" alt="Question Image" style="max-width: 300px;">
+            </div>
+            <div id="answerOptions" style="text-align: left; margin: 20px auto; max-width: 400px;"></div>
+        </div>
+    </div>
+</div>
+
+    <script>
+     var MId="";
+        $(function () {
+            function closeModal() {
+                $('#quizModalOverlay').fadeOut();
+            }
+
+            $('#startQuizBtn').on('click', function () {
+                $('#quizModalOverlay').fadeIn();
+            });
+
+            $('#closeModalX, #quizModalOverlay').on('click', function (e) {
+                if (e.target.id === 'quizModalOverlay' || e.target.id === 'closeModalX') {
+                    closeModal();
+                }
+            });
+
+            $(document).on('keydown', function (e) {
+                if (e.key === "Escape") {
+                    closeModal();
+                }
+            });
+
+            let currentIndex = 0;
+            const allQuest = @Html.Raw(Json.Serialize(ViewBag.AllQuest));
+            $('#TotalQuestion').text(allQuest.length);
+
+            function renderQuestion(index) {
+                const question = allQuest[index];
+                if (!question) return;
+
+                $('#QuestionTitle').html(question.quiz.title);
+                $('#startQuestion').html(index + 1);
+
+                if (question.QuestionMedia) {
+                    $('#QuestionMedia').attr('src', question.QuestionMedia).show();
+                } else {
+                    $('#QuestionMedia').hide();
+                }
+
+                const answerContainer = $('<div class="row" style="margin-top:10px;"></div>');
+                const $answerWrapper = $('<div class="container" id="dynamicAnswerArea"></div>').append(answerContainer);
+                $('#QuestionMedia').parent().next().html($answerWrapper); // Clear and inject
+
+                if (question.answers && question.answers.length > 0) {
+                    question.answers.forEach((answer, i) => {
+                        const radioId = `answer_${index}_${i}`;
+                        const col = $(`
+                            <div class="col-md-6 col-6">
+                                <div class="preview-block" style="margin:10px">
+                                    <div class="custom-control custom-radio image-control">
+                                        <input type="radio" class="custom-control-input" id="${radioId}" name="answer" value="${answer.answerID}" />
+                                        <label class="custom-control-label" for="${radioId}">
+                                            ${answer.answerMedia ? `<img src="${answer.answerMedia}" style="width:100%;max-width:320px;height:100px;object-fit:cover;" />` : ''}
+                                        </label>
+                                    </div>
+                                    <h5 class="preview-title overline-title" style="color:white;margin-top:8px;">${answer.answerText}</h5>
+                                </div>
+                            </div>
+                        `);
+                        answerContainer.append(col);
+                    });
+                } else {
+                    $('#dynamicAnswerArea').html('<p style="color:white;">No answers available.</p>');
+                }
+            }
+
+            renderQuestion(currentIndex);
+
+            $('#prevBtn').on('click', function () {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    renderQuestion(currentIndex);
+                }
+            });
+
+            $('#nextBtn').on('click', function () {
+                if (currentIndex < allQuest.length - 1) {
+                    currentIndex++;
+                    renderQuestion(currentIndex);
+                }
+            });
+
+            $('#checkAnswersBtn').on('click', function () {
+                const selected = $('input[name="answer"]:checked').val();
+                if (!selected) {
+                    alert("Please select an answer.");
+                } else {
+                    alert("You selected: " + selected);
+                }
+            });
+           
+            // Watch tracking for ALL videos
+            $('.trainingVideo').each(function () {
+                const $video = $(this);
+                const video = $video[0];
+                const mediaId = $video.data('media-id');
+            MId=mediaId;
+           console.log(MId);
+                const WATCH_THRESHOLD = 0.8;
+                let watchedSeconds = 0;
+                let durationKnown = false;
+                let isCompleteSent = false;
+                let flags = [];
+
+                $video.on('loadedmetadata', function () {
+                    if (video.duration > 0) {
+                        flags = new Array(Math.ceil(video.duration)).fill(false);
+                        durationKnown = true;
+                    }
+                });
+
+                $video.on('timeupdate', function () {
+                    if (!durationKnown || isCompleteSent) return;
+
+                    const currentSecond = Math.floor(video.currentTime);
+
+                    if (!flags[currentSecond]) {
+                        flags[currentSecond] = true;
+                        watchedSeconds++;
+                    }
+
+                    const percentWatched = watchedSeconds / video.duration;
+
+                    if (percentWatched >= WATCH_THRESHOLD && !isCompleteSent) {
+                        isCompleteSent = true;
+
+
+
+                        $.ajax({
+                        url: '/TrainingModule/MarkVideoComplete',
+                            type: 'GET',
+                            contentType: 'application/json',
+                       data: { mediaId: String(MId)},
+                            success: function () {
+                                console.log("📦 Completion recorded for mediaId:", mediaId);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("❌ Error recording video completion:", error);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+

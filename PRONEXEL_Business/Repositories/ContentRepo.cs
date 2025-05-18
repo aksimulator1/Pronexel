@@ -113,8 +113,11 @@ namespace PRONEXEL_Business.Repositories
         {
             try
             {
-              
-                var res = await databaseService.ExecuteStoredProcedureAsync<TopicSubcategoryModel>("sp_GetSubTopics");
+                var pram = new
+                {
+                    UserId = await userRepo.ActiveUserId()
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<TopicSubcategoryModel>("sp_GetSubTopics",pram);
                 return res.ToList();
             }
             catch (Exception)
@@ -258,6 +261,24 @@ namespace PRONEXEL_Business.Repositories
             catch (Exception)
             {
                 throw; // Consider logging here
+            }
+        }
+        public async Task<string> AddVideoViewHistory(string MediaID)
+        {
+            try
+            {
+                var pram = new
+                {
+                    UserID = await userRepo.ActiveUserId(),
+                    MediaID = MediaID
+
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("InsertUserContentViewHistory", pram);
+                return res.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

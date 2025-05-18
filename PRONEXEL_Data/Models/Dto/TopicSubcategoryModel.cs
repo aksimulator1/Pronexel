@@ -14,6 +14,8 @@ namespace PRONEXEL_Data.Models.Dto
         public string Description { get; set; }
         public DateTime CreatedOn { get; set; }
         public Boolean IsDeleted  { get; set; }
+        public Boolean ViewStatus { get; set; }
+
 
     }
 }

@@ -38,11 +38,18 @@ namespace PRONEXEL_WEB.Controllers
                 // Handle the case where no media is returned
                 return View(new List<Media>());
             }
-
+            var AllQuestion = await contentRepo.AllQuestionwithAnswer();
+            ViewBag.AllQuest = AllQuestion;
             var filteredMedia = res.Where(x => x.SubTopicID == SubTopicID).ToList();
 
             return View(filteredMedia);
 
+        }
+        [HttpGet]
+        public async Task<JsonResult> MarkVideoComplete(string mediaId)
+        {
+            var res =await contentRepo.AddVideoViewHistory(mediaId);
+            return Json("View");
         }
        
     }

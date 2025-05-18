@@ -7,6 +7,10 @@
 
 <head>
     <style>
+        .ni-eye-alt {
+            color: #ec9126;
+            font-size: 18px;
+        }
         .nk-menu-link.selected {
             background-color: white !important;
             color: black !important;
@@ -37,8 +41,8 @@
                     </div>
                     <div class="nk-sidebar-brand">
                         <a href="html/index.html" class="logo-link nk-sidebar-logo">
-                            <img class="logo-light" style="width:15%" src="~/media/webimages/pronexel.png" alt="logo">
-                            <img class="logo-dark" style="width:15%" src="~/media/webimages/pronexel.png" alt="logo-dark">
+                            <img class="logo-light" style="width:8%" src="~/media/webimages/pronexel.png" alt="logo">
+                            <img class="logo-dark" style="width:8%" src="~/media/webimages/pronexel.png" alt="logo-dark">
                         </a>
                     </div>
                 </div>
@@ -79,6 +83,7 @@
                 </div>
             </div>
             <!-- /Sidebar -->
+
             <!-- Wrap -->
             <div class="nk-wrap">
                 <!-- Header -->
@@ -125,6 +130,7 @@
                     </div>
                 </div>
                 <!-- /Header -->
+
                 <!-- Main Content Area -->
                 <div id="NewContent" style="position: relative; width: 100%; height: auto;margin-top:50px;">
                     <div style="opacity:30%">
@@ -171,7 +177,11 @@
 
                         const a = document.createElement('a');
                         a.className = 'nk-menu-link subtopic-link';
-                        a.innerHTML = `<span class="nk-menu-text">${sub.subTopicName}</span>`;
+                        debugger;
+                        // 👁️ Add eye icon if viewStatus is true
+                        const eyeIcon = sub.viewStatus ? '<em class="icon ni ni-eye-alt" style="margin-right: 5px;"></em>' : '';
+                        a.innerHTML = `<span class="nk-menu-text">${eyeIcon}${sub.subTopicName}</span>`;
+
                         a.onclick = function () {
                             onSubtopicClick(this, topicId, sub.subTopicID);
                         };
@@ -195,5 +205,6 @@
             $("#NewContent").load(url);
         }
     </script>
+
 </body>
 </html>

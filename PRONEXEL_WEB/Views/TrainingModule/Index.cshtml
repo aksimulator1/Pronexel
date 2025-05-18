@@ -160,19 +160,17 @@
     <script src="~/newtheme/assets/js/bundle.js?ver=2.5.0"></script>
     <script src="~/newtheme/assets/js/scripts.js?ver=2.5.0"></script>
     <script>
-             function loadSubtopics(element, topicId, autoSelectFirst = false) {
+        function loadSubtopics(element, topicId, autoSelectFirst = false) {
             // Highlight selected topic
             document.querySelectorAll('.nk-menu-link.topic-link').forEach(btn => btn.classList.remove('selected'));
             element.classList.add('selected');
-
-            // console.log("Selected Topic ID:", topicId);
-            // console.log("Selected SubTopic ID:", null); // No subtopic selected on topic click yet
 
             $.ajax({
                 url: '/JsonSide/AllSubCategroy',
                 type: 'GET',
                 data: { categoryId: topicId },
                 success: function (subtopics) {
+                    console.log(subtopics);
                     const container = document.getElementById('subtopics-container');
                     container.innerHTML = ''; // Clear old subtopics
 
@@ -182,7 +180,11 @@
 
                         const a = document.createElement('a');
                         a.className = 'nk-menu-link subtopic-link';
-                        a.innerHTML = `<span class="nk-menu-text">${sub.subTopicName}</span>`;
+
+                        // Conditionally render the eye icon
+                        const eyeIcon = sub.viewStatus ? '<em class="icon ni ni-eye-alt" style="margin-right: 5px;"></em>' : '';
+
+                        a.innerHTML = `<span class="nk-menu-text">${eyeIcon}${sub.subTopicName}</span>`;
                         a.onclick = function () {
                             onSubtopicClick(this, topicId, sub.subTopicID);
                         };
@@ -206,8 +208,10 @@
             // Highlight selected subtopic
             document.querySelectorAll('#subtopics-container .nk-menu-link').forEach(btn => btn.classList.remove('selected'));
             element.classList.add('selected');
-                var url = '/TrainingModule/AllMedia?TopicID=' + encodeURIComponent(topicId) + '&SubTopicID=' + encodeURIComponent(subTopicId);
-                    $("#DivContainerForCustForm").load(url);
+
+            const url = '/TrainingModule/AllMedia?TopicID=' + encodeURIComponent(topicId) + '&SubTopicID=' + encodeURIComponent(subTopicId);
+            $("#DivContainerForCustForm").load(url);
+
             console.log("Selected Topic ID:", topicId);
             console.log("Selected SubTopic ID:", subTopicId);
         }
@@ -220,7 +224,6 @@
                 loadSubtopics(firstTopic, topicId, true);
             }
         });
-
     </script>
 
 
