@@ -180,7 +180,7 @@
                         debugger;
                         // 👁️ Add eye icon if viewStatus is true
                         const eyeIcon = sub.viewStatus ? '<em class="icon ni ni-eye-alt" style="margin-right: 5px;"></em>' : '';
-                        a.innerHTML = `<span class="nk-menu-text">${eyeIcon}${sub.subTopicName}</span>`;
+                        a.innerHTML = `<span class="nk-menu-text">${sub.subTopicName}</span>${eyeIcon}`;
 
                         a.onclick = function () {
                             onSubtopicClick(this, topicId, sub.subTopicID);
