@@ -29,5 +29,12 @@ namespace PRONEXEL_WEB.Controllers
             }
             return Json(data);
         }
+        [HttpGet]
+        public async Task<JsonResult>SubmittedUser(string AnswerID)
+        {
+            var res=await _contentRepo.SubmitUserAnswer(AnswerID);
+            return Json("data");
+        }
+
     }
 }

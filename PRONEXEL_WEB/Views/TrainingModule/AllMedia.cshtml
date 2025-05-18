@@ -175,7 +175,18 @@
                 if (!selected) {
                     alert("Please select an answer.");
                 } else {
-                   ////
+                   $.ajax({
+                      url: '/JsonSide/SubmittedUser',
+                           type: 'GET',
+                           contentType: 'application/json',
+                    data: { AnswerID: String(selected)},
+                           success: function () {
+                              // console.log("📦 Completion recorded for mediaId:", mediaId);
+                           },
+                           error: function (xhr, status, error) {
+                            //   console.error("❌ Error recording video completion:", error);
+                           }
+                       });
                 }
             });
            
