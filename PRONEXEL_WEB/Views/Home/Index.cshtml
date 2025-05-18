@@ -22,7 +22,7 @@
     <meta charset="utf-8">
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login | Pronexel</title>
+    <title> Pronexel</title>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="~/newtheme/assets/css/dashlite.css?ver=2.5.0">
@@ -104,16 +104,16 @@
                                     <li class="dropdown user-dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <div class="user-toggle">
-                                                <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
+                                                <div class="user-avatar sm" style="background-color:#101924 !important"><em class="icon ni ni-user-alt"></em></div>
                                             </div>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1">
                                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                                 <div class="user-card">
-                                                    <div class="user-avatar"><span>AB</span></div>
+                                                    <div class="user-avatar" style="background-color:#101924 !important"><span>  @User.Identity.Name.Substring(0, 1).ToUpper()</span></div>
                                                     <div class="user-info">
-                                                        <span class="lead-text">Abu Bin Ishtiyak</span>
-                                                        <span class="sub-text">info@softnio.com</span>
+                                                        <span class="lead-text">@User.Identity.Name</span>
+                                                
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,9 +144,9 @@
                         Pronexel offers expert technical consultancy and tailored solutions for oil & gas operators...
                     </h5>
 
-                    <a href="~/TrainingModule/Index" class="btn btn-lg" style="color:white;width:18%; margin-left:40%; background-color:#101924;">
+                   @*  <a href="~/TrainingModule/Index" class="btn btn-lg" style="color:white;width:18%; margin-left:40%; background-color:#101924;">
                         Goto Course <em class="icon ni ni-arrow-right ml-1"></em>
-                    </a>
+                    </a> *@
                 </div>
                 <!-- /Main Content Area -->
             </div>
@@ -177,7 +177,7 @@
 
                         const a = document.createElement('a');
                         a.className = 'nk-menu-link subtopic-link';
-                        debugger;
+               
                         // 👁️ Add eye icon if viewStatus is true
                         const eyeIcon = sub.viewStatus ? '<em class="icon ni ni-eye-alt" style="margin-right: 5px;"></em>' : '';
                         a.innerHTML = `<span class="nk-menu-text">${sub.subTopicName}</span>${eyeIcon}`;
