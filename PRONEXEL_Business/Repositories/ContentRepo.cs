@@ -281,6 +281,24 @@ namespace PRONEXEL_Business.Repositories
                 throw;
             }
         }
+        public async Task<string> SubmitUserAnswer(string AnswerID)
+        {
+            try
+            {
+                var pram = new
+                {
+                    UserID = await userRepo.ActiveUserId(),
+                    AnswerID = AnswerID
+
+                };
+                var res = await databaseService.ExecuteStoredProcedureAsync<string>("SubmitUserAnswer", pram);
+                return res.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
 

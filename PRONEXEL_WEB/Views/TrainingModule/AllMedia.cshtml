@@ -74,7 +74,7 @@
             </div>
             <button id="prevBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Previous</button>
             <button id="nextBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Next</button>
-            <button id="checkAnswersBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Check Answers</button>
+            <button id="SubmitAnswersBtn" class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Submit Answers</button>
             <button class="quiz-btn" style="width: 100%; margin: 5px 0; padding: 10px;">Review Material</button>
         </div>
         <div style="flex: 1; padding: 40px; text-align: center;">
@@ -170,12 +170,12 @@
                 }
             });
 
-            $('#checkAnswersBtn').on('click', function () {
+            $('#SubmitAnswersBtn').on('click', function () {
                 const selected = $('input[name="answer"]:checked').val();
                 if (!selected) {
                     alert("Please select an answer.");
                 } else {
-                    alert("You selected: " + selected);
+                   ////
                 }
             });
            
