@@ -181,6 +181,7 @@
                            contentType: 'application/json',
                     data: { AnswerID: String(selected)},
                            success: function () {
+                                 renderQuestion(currentIndex+1);
                               // console.log("📦 Completion recorded for mediaId:", mediaId);
                            },
                            error: function (xhr, status, error) {
